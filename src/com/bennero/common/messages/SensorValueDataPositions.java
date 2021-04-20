@@ -21,37 +21,17 @@
  * =====================================================================================================================
  */
 
-package com.bennero.logging;
-
-import javafx.event.Event;
+package com.bennero.common.messages;
 
 /**
- * LogEvent is created and fired when a log is made and a listener is listening to the Logger
+ * Defines a sensor value messages data structure (position of each value within the message data)
  *
- * @see         Logger
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class LogEvent extends Event
+public class SensorValueDataPositions
 {
-    private final String logText;
-    private final LogLevel logLevel;
-
-    public LogEvent(String logText, LogLevel logLevel)
-    {
-        super(null);
-        this.logText = logText;
-        this.logLevel = logLevel;
-    }
-
-    public String getLogText()
-    {
-        return logText;
-    }
-
-    public LogLevel getLogLevel()
-    {
-        return logLevel;
-    }
+    public final static int ID_POS = 1;
+    public final static int VALUE_POS = 2;
 }

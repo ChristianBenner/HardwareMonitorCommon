@@ -21,17 +21,17 @@
  * =====================================================================================================================
  */
 
-package com.bennero.messages;
+package com.bennero.common.messages;
 
 /**
- * Defines a remove sensor data messages data structure (position of each value within the message data)
+ * Defines a broadcast announcement messages data structure (position of each value within the message data)
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class RemoveSensorDataPositions
+public class BroadcastAnnouncementDataPositions
 {
-    public final static int SENSOR_ID_POS = 1;
-    public final static int PAGE_ID_POS = 2;
+    public final static int HW_SYSTEM_IDENTIFIER_POS = 1;   // long (8 bytes)
+    public final static int IP4_ADDRESS_POS = 9;           // 4 bytes
 }

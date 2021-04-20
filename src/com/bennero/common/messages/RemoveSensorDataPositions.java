@@ -21,37 +21,17 @@
  * =====================================================================================================================
  */
 
-package com.bennero.messages;
+package com.bennero.common.messages;
 
 /**
- * Defines a page data messages data structure (position of each value within the message data)
+ * Defines a remove sensor data messages data structure (position of each value within the message data)
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class PageDataPositions
+public class RemoveSensorDataPositions
 {
-    public final static int ID_POS = 1;
-    public final static int COLOUR_R_POS = 2;
-    public final static int COLOUR_G_POS = 3;
-    public final static int COLOUR_B_POS = 4;
-    public final static int TITLE_COLOUR_R_POS = 5;
-    public final static int TITLE_COLOUR_G_POS = 6;
-    public final static int TITLE_COLOUR_B_POS = 7;
-    public final static int SUBTITLE_COLOUR_R_POS = 8;
-    public final static int SUBTITLE_COLOUR_G_POS = 9;
-    public final static int SUBTITLE_COLOUR_B_POS = 10;
-    public final static int ROWS_POS = 11;
-    public final static int COLUMNS_POS = 12;
-    public final static int NEXT_ID_POS = 13;
-    public final static int TRANSITION_TYPE_POS = 14;
-    public final static int TRANSITION_TIME_POS = 15;
-    public final static int DURATION_MS_POS = 19;
-    public final static int TITLE_POS = 23;
-    public final static int TITLE_ENABLED_POS = 87;
-    public final static int TITLE_ALIGNMENT_POS = 88;
-    public final static int SUBTITLE_POS = 89;
-    public final static int SUBTITLE_POS_ENABLED_POS = 153;
-    public final static int SUBTITLE_POS_ALIGNMENT_POS = 154;
+    public final static int SENSOR_ID_POS = 1;
+    public final static int PAGE_ID_POS = 2;
 }

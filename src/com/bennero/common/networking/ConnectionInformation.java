@@ -21,11 +21,11 @@
  * =====================================================================================================================
  */
 
-package com.bennero.networking;
+package com.bennero.common.networking;
 
 import javafx.event.Event;
 
-import static com.bennero.networking.NetworkUtils.stringToMacAddress;
+import static com.bennero.common.networking.NetworkUtils.stringToMacAddress;
 
 /**
  * Holds connection information of a hardware monitor or editor node such as version and AddressInformation

@@ -21,43 +21,24 @@
  * =====================================================================================================================
  */
 
-package com.bennero.networking;
+package com.bennero.common.messages;
 
 /**
- * Holds network address information such as MAC address, IP4 address and hostname. The class provides encapsulation for
- * commonly connection information.
+ * Defines a broadcast reply messages data structure (position of each value within the message data)
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class AddressInformation
+public class BroadcastReplyDataPositions
 {
-    private final byte[] macAddress;
-    private final byte[] ip4Address;
-    private final String hostname;
-
-    public AddressInformation(final byte[] macAddressStr,
-                              final byte[] ip4AddressStr,
-                              final String hostname)
-    {
-        this.macAddress = macAddressStr;
-        this.ip4Address = ip4AddressStr;
-        this.hostname = hostname;
-    }
-
-    public final byte[] getMacAddress()
-    {
-        return macAddress;
-    }
-
-    public final byte[] getIp4Address()
-    {
-        return ip4Address;
-    }
-
-    public final String getHostname()
-    {
-        return hostname;
-    }
+    public final static int HW_SYSTEM_IDENTIFIER_POS = 1;   // long (8 bytes)
+    public final static int MAJOR_VERSION_POS = 9;          // 1 byte
+    public final static int MINOR_VERSION_POS = 10;         // 1 byte
+    public final static int PATCH_VERSION_POS = 11;         // 1 byte
+    public final static int MAC_ADDRESS_POS = 12;           // 6 bytes
+    public final static int IP4_ADDRESS_POS = 18;           // 4 bytes
+    public final static int HOSTNAME_POS = 22;              // 64 bytes
+    public final static int CURRENTLY_IN_USE = 86;           // 1 byte
+    public final static int CURRENT_CLIENT_HOSTNAME = 87;    // 64 bytes
 }

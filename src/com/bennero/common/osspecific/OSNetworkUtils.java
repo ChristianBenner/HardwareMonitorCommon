@@ -21,7 +21,7 @@
  * =====================================================================================================================
  */
 
-package com.bennero.osspecific;
+package com.bennero.common.osspecific;
 
 import java.io.BufferedReader;
 import java.io.IOException;

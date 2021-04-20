@@ -21,26 +21,37 @@
  * =====================================================================================================================
  */
 
-package com.bennero.messages;
+package com.bennero.common.messages;
 
 /**
- * Constants for different types of messages. Each message has a unique ID represented as a byte for efficient usage in
- * networking or other message protocols.
+ * Defines a page data messages data structure (position of each value within the message data)
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class MessageType
+public class PageDataPositions
 {
-    public static final int DATA = 0x02;
-    public static final int PAGE_SETUP = 0x03;
-    public static final byte SENSOR_SETUP = 0x04;
-    public static final byte BROADCAST_MESSAGE = 0x05;
-    public static final byte BROADCAST_REPLY_MESSAGE = 0x06;
-    public static final byte REMOVE_PAGE = 0x07;
-    public static final byte REMOVE_SENSOR = 0x08;
-    public static final byte HEARTBEAT_MESSAGE = 0x09;
-    public static final byte CONNECTION_REQUEST_MESSAGE = 0x0A;
-    public static final byte CONNECTION_REQUEST_RESPONSE_MESSAGE = 0x0B;
+    public final static int ID_POS = 1;
+    public final static int COLOUR_R_POS = 2;
+    public final static int COLOUR_G_POS = 3;
+    public final static int COLOUR_B_POS = 4;
+    public final static int TITLE_COLOUR_R_POS = 5;
+    public final static int TITLE_COLOUR_G_POS = 6;
+    public final static int TITLE_COLOUR_B_POS = 7;
+    public final static int SUBTITLE_COLOUR_R_POS = 8;
+    public final static int SUBTITLE_COLOUR_G_POS = 9;
+    public final static int SUBTITLE_COLOUR_B_POS = 10;
+    public final static int ROWS_POS = 11;
+    public final static int COLUMNS_POS = 12;
+    public final static int NEXT_ID_POS = 13;
+    public final static int TRANSITION_TYPE_POS = 14;
+    public final static int TRANSITION_TIME_POS = 15;
+    public final static int DURATION_MS_POS = 19;
+    public final static int TITLE_POS = 23;
+    public final static int TITLE_ENABLED_POS = 87;
+    public final static int TITLE_ALIGNMENT_POS = 88;
+    public final static int SUBTITLE_POS = 89;
+    public final static int SUBTITLE_POS_ENABLED_POS = 153;
+    public final static int SUBTITLE_POS_ALIGNMENT_POS = 154;
 }

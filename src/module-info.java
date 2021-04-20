@@ -29,10 +29,10 @@
 module HardwareMonitorCommon
 {
     exports com.bennero.common;
-    exports com.bennero.messages;
-    exports com.bennero.osspecific;
-    exports com.bennero.networking;
-    exports com.bennero.logging;
+    exports com.bennero.common.messages;
+    exports com.bennero.common.osspecific;
+    exports com.bennero.common.networking;
+    exports com.bennero.common.logging;
 
     requires javafx.controls;
     requires javafx.base;

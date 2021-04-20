@@ -21,24 +21,22 @@
  * =====================================================================================================================
  */
 
-package com.bennero.messages;
+package com.bennero.common.messages;
 
 /**
- * Defines a broadcast reply messages data structure (position of each value within the message data)
+ * Defines a connection request reply messages data structure (position of each value within the message data)
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class BroadcastReplyDataPositions
+public class ConnectionRequestReplyDataPositions
 {
-    public final static int HW_SYSTEM_IDENTIFIER_POS = 1;   // long (8 bytes)
-    public final static int MAJOR_VERSION_POS = 9;          // 1 byte
-    public final static int MINOR_VERSION_POS = 10;         // 1 byte
-    public final static int PATCH_VERSION_POS = 11;         // 1 byte
-    public final static int MAC_ADDRESS_POS = 12;           // 6 bytes
-    public final static int IP4_ADDRESS_POS = 18;           // 4 bytes
-    public final static int HOSTNAME_POS = 22;              // 64 bytes
-    public final static int CURRENTLY_IN_USE = 86;           // 1 byte
-    public final static int CURRENT_CLIENT_HOSTNAME = 87;    // 64 bytes
+    public final static int MAJOR_VERSION_POS = 1;          // 1 byte
+    public final static int MINOR_VERSION_POS = 2;         // 1 byte
+    public final static int PATCH_VERSION_POS = 3;         // 1 byte
+    public final static int CONNECTION_ACCEPTED = 4;        // 1 byte
+    public final static int VERSION_MISMATCH = 5;           // 1 byte
+    public final static int CURRENTLY_IN_USE = 6;           // 1 byte
+    public final static int CURRENT_CLIENT_HOSTNAME = 7;    // 64 bytes
 }

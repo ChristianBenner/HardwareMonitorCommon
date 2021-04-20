@@ -21,11 +21,11 @@
  * =====================================================================================================================
  */
 
-package com.bennero.networking;
+package com.bennero.common.networking;
 
-import com.bennero.osspecific.OSNetworkUtils;
-import com.bennero.osspecific.OSUtils;
-import com.bennero.osspecific.RaspberryPiNetUtils;
+import com.bennero.common.osspecific.OSNetworkUtils;
+import com.bennero.common.osspecific.OSUtils;
+import com.bennero.common.osspecific.RaspberryPiNetUtils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

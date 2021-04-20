@@ -21,17 +21,26 @@
  * =====================================================================================================================
  */
 
-package com.bennero.messages;
+package com.bennero.common.messages;
 
 /**
- * Defines a broadcast announcement messages data structure (position of each value within the message data)
+ * Constants for different types of messages. Each message has a unique ID represented as a byte for efficient usage in
+ * networking or other message protocols.
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class BroadcastAnnouncementDataPositions
+public class MessageType
 {
-    public final static int HW_SYSTEM_IDENTIFIER_POS = 1;   // long (8 bytes)
-    public final static int IP4_ADDRESS_POS = 9;           // 4 bytes
+    public static final int DATA = 0x02;
+    public static final int PAGE_SETUP = 0x03;
+    public static final byte SENSOR_SETUP = 0x04;
+    public static final byte BROADCAST_MESSAGE = 0x05;
+    public static final byte BROADCAST_REPLY_MESSAGE = 0x06;
+    public static final byte REMOVE_PAGE = 0x07;
+    public static final byte REMOVE_SENSOR = 0x08;
+    public static final byte HEARTBEAT_MESSAGE = 0x09;
+    public static final byte CONNECTION_REQUEST_MESSAGE = 0x0A;
+    public static final byte CONNECTION_REQUEST_RESPONSE_MESSAGE = 0x0B;
 }

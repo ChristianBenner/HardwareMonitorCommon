@@ -21,10 +21,10 @@
  * =====================================================================================================================
  */
 
-package com.bennero.osspecific;
+package com.bennero.common.osspecific;
 
-import com.bennero.logging.LogLevel;
-import com.bennero.logging.Logger;
+import com.bennero.common.logging.LogLevel;
+import com.bennero.common.logging.Logger;
 
 import java.io.*;
 

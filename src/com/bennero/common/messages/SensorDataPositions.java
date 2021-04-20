@@ -21,7 +21,7 @@
  * =====================================================================================================================
  */
 
-package com.bennero.messages;
+package com.bennero.common.messages;
 
 /**
  * Defines a sensor data messages data structure (position of each value within the message data)

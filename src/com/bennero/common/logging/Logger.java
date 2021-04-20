@@ -21,7 +21,7 @@
  * =====================================================================================================================
  */
 
-package com.bennero.logging;
+package com.bennero.common.logging;
 
 import javafx.event.EventHandler;
 
