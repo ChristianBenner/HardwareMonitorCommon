@@ -43,4 +43,5 @@ public class MessageType
     public static final byte HEARTBEAT_MESSAGE = 0x09;
     public static final byte CONNECTION_REQUEST_MESSAGE = 0x0A;
     public static final byte CONNECTION_REQUEST_RESPONSE_MESSAGE = 0x0B;
+    public static final byte DISCONNECT_MESSAGE = 0x0C;
 }
