@@ -24,25 +24,18 @@
 package com.bennero.common.messages;
 
 /**
- * Constants for different types of messages. Each message has a unique ID represented as a byte for efficient usage in
- * networking or other message protocols.
+ * Defines a sensor transformation messages data structure (position of each value within the message data)
  *
  * @author      Christian Benner
  * @version     %I%, %G%
  * @since       1.0
  */
-public class MessageType
+public class SensorTransformationPositions
 {
-    public static final int DATA = 0x02;
-    public static final int PAGE_SETUP = 0x03;
-    public static final byte SENSOR_SETUP = 0x04;
-    public static final byte BROADCAST_MESSAGE = 0x05;
-    public static final byte BROADCAST_REPLY_MESSAGE = 0x06;
-    public static final byte REMOVE_PAGE = 0x07;
-    public static final byte REMOVE_SENSOR = 0x08;
-    public static final byte HEARTBEAT_MESSAGE = 0x09;
-    public static final byte CONNECTION_REQUEST_MESSAGE = 0x0A;
-    public static final byte CONNECTION_REQUEST_RESPONSE_MESSAGE = 0x0B;
-    public static final byte DISCONNECT_MESSAGE = 0x0C;
-    public static final byte SENSOR_TRANSFORMATION_MESSAGE = 0x0D;
+    public final static int ID_POS = 1;
+    public final static int PAGE_ID_POS = 2;
+    public final static int ROW_POS = 3;
+    public final static int COLUMN_POS = 4;
+    public final static int ROW_SPAN_POS = 5;
+    public final static int COLUMN_SPAN_POS = 6;
 }
