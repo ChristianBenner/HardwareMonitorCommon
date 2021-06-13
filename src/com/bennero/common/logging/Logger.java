@@ -37,10 +37,10 @@ import java.util.ArrayList;
 public class Logger
 {
     private static LogLevel logLevel = LogLevel.INFO;
-    private static String LOG_LEVEL_INFO_TEXT = "[INFO] ";
-    private static String LOG_LEVEL_DEBUG_TEXT = "[DEBUG] ";
-    private static String LOG_LEVEL_ERROR_TEXT = "[ERROR] ";
-    private static String LOG_LEVEL_WARNING_TEXT = "[WARNING] ";
+    private static final String LOG_LEVEL_INFO_TEXT = "[INFO] ";
+    private static final String LOG_LEVEL_DEBUG_TEXT = "[DEBUG] ";
+    private static final String LOG_LEVEL_ERROR_TEXT = "[ERROR] ";
+    private static final String LOG_LEVEL_WARNING_TEXT = "[WARNING] ";
 
     private static ArrayList<EventHandler<LogEvent>> logEventHandlers = new ArrayList<>();
 
