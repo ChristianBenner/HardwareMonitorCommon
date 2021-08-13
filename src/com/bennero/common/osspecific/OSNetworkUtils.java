@@ -23,6 +23,9 @@
 
 package com.bennero.common.osspecific;
 
+import com.bennero.common.logging.LogLevel;
+import com.bennero.common.logging.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -95,6 +98,8 @@ public class OSNetworkUtils
 
     public static ArrayList<String> fetchWirelessDevicesLinux()
     {
+        Logger.log(LogLevel.DEBUG, "OSNetworkUtils", "Fetching wireless device list");
+
         // List of found wireless devices
         ArrayList<String> foundWirelessDevices = new ArrayList<>();
         Runtime runtime = Runtime.getRuntime();
@@ -128,8 +133,11 @@ public class OSNetworkUtils
 
     public static ArrayList<String> fetchNetworksLinux()
     {
+        Logger.log(LogLevel.INFO, "OSNetworkUtils", "Fetching available networks");
+
         // List of found SSIDs
         ArrayList<String> foundWirelessNetworks = new ArrayList<>();
+        Runtime runtime = Runtime.getRuntime();
 
         // Get the list of wireless devices
         ArrayList<String> foundWirelessDevices = fetchWirelessDevicesLinux();
@@ -137,19 +145,45 @@ public class OSNetworkUtils
         {
             for(int x = 0; x < foundWirelessDevices.size(); x++)
             {
-                final String LINUX_FETCH_NETWORKS_CMD = "sudo iw dev " + foundWirelessDevices.get(x) + " scan";
-                System.out.println("RUNNING: " + LINUX_FETCH_NETWORKS_CMD);
-                Runtime runtime = Runtime.getRuntime();
-                Process process = runtime.exec(LINUX_FETCH_NETWORKS_CMD);
+                final String NETWORK_DEVICE = foundWirelessDevices.get(x);
+
+                String askPassLoc = System.getenv("SUDO_ASKPASS");
+
+                ProcessBuilder processBuilder;
+                if(askPassLoc == null || askPassLoc.isEmpty())
+                {
+                    // Requires sudo
+                    processBuilder = new ProcessBuilder("sudo", "iw", "dev", NETWORK_DEVICE, "scan");
+                }
+                else
+                {
+                    // Requires password asspass to be set for GUI password pop-up
+                    // e.g. SUDO_ASKPASS=/usr/libexec/seahorse/ssh-askpass
+                    processBuilder = new ProcessBuilder("sudo", "-A", "iw", "dev", NETWORK_DEVICE, "scan");
+                }
+
+                processBuilder.redirectErrorStream();
+
+                Logger.log(LogLevel.DEBUG, "OSNetworkUtils", "Scanning device " + NETWORK_DEVICE);
+
+                // Start the process
+                Process process = processBuilder.start();
+
+                // Fetch and print out any errors that have occured
+                BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                String error = null;
+                while ((error = errorStream.readLine()) != null)
+                {
+                    System.err.println(error);
+                }
+
                 BufferedReader inputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line = null;
-                System.out.println("N: " + inputStream.readLine());
+
                 while ((line = inputStream.readLine()) != null)
                 {
-                    System.out.println("LINE: " + line);
                     if (line.contains(SSID_STRING))
                     {
-                        System.out.println("SSIDLINE: " + line);
                         String[] theSsid = line.split(LINUX_SSID_STRING_DELIMETER);
                         for (int i = 1; i < theSsid.length; i++)
                         {
@@ -165,7 +199,8 @@ public class OSNetworkUtils
 
                             if (!found)
                             {
-                                System.out.println("Discovered new network: " + theSsid[i]);
+                                Logger.log(LogLevel.INFO, "OSNetworkUtils",
+                                        "Discovered network " + theSsid[i]);
                                 foundWirelessNetworks.add(theSsid[i]);
                             }
                         }
