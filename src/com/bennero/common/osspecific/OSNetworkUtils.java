@@ -43,11 +43,13 @@ public class OSNetworkUtils
     private final static int EXIT_VALUE_SUCCESS = 0;
 
     private final static String WINDOWS_FETCH_NETWORKS_CMD = "netsh wlan show networks mode=Bssid";
-    private final static String LINUX_FETCH_NETWORKS_CMD = "sudo iw dev wlan0 scan";
+    private final static String LINUX_FETCH_WIRELESS_DEVICES = "iw dev";
     private final static String SSID_STRING = "SSID";
+    private final static String INTERFACE_STRING = "Interface";
     private final static String WINDOWS_BSSID_STRING = "BSSID";
     private final static String WINDOWS_SSID_STRING_DELIMETER = " : ";
     private final static String LINUX_SSID_STRING_DELIMETER = ": ";
+    private final static String LINUX_INTERFACE_STRING_DELIMETER = " ";
 
     public static ArrayList<String> fetchNetworksWindows()
     {
@@ -91,39 +93,81 @@ public class OSNetworkUtils
         return foundWirelessNetworks;
     }
 
+    public static ArrayList<String> fetchWirelessDevicesLinux()
+    {
+        // List of found wireless devices
+        ArrayList<String> foundWirelessDevices = new ArrayList<>();
+        Runtime runtime = Runtime.getRuntime();
+
+        try
+        {
+            // Fetch the different wireless devices
+            Process wirelessDevFetch = runtime.exec(LINUX_FETCH_WIRELESS_DEVICES);
+            BufferedReader inputStream = new BufferedReader(new InputStreamReader(wirelessDevFetch.getInputStream()));
+            String line = null;
+
+            while ((line = inputStream.readLine()) != null)
+            {
+                if (line.contains(INTERFACE_STRING))
+                {
+                    String[] interfaceLine = line.split(LINUX_INTERFACE_STRING_DELIMETER);
+                    if(interfaceLine.length >= 2 && interfaceLine[1] != null)
+                    {
+                        foundWirelessDevices.add(interfaceLine[1]);
+                    }
+                }
+            }
+        }
+        catch (IOException exception)
+        {
+            exception.printStackTrace();
+        }
+
+        return foundWirelessDevices;
+    }
+
     public static ArrayList<String> fetchNetworksLinux()
     {
         // List of found SSIDs
         ArrayList<String> foundWirelessNetworks = new ArrayList<>();
 
-        Runtime runtime = Runtime.getRuntime();
-
+        // Get the list of wireless devices
+        ArrayList<String> foundWirelessDevices = fetchWirelessDevicesLinux();
         try
         {
-            Process process = runtime.exec(LINUX_FETCH_NETWORKS_CMD);
-            BufferedReader inputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = null;
-            while ((line = inputStream.readLine()) != null)
+            for(int x = 0; x < foundWirelessDevices.size(); x++)
             {
-                if (line.contains(SSID_STRING))
+                final String LINUX_FETCH_NETWORKS_CMD = "sudo iw dev " + foundWirelessDevices.get(x) + " scan";
+                System.out.println("RUNNING: " + LINUX_FETCH_NETWORKS_CMD);
+                Runtime runtime = Runtime.getRuntime();
+                Process process = runtime.exec(LINUX_FETCH_NETWORKS_CMD);
+                BufferedReader inputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line = null;
+                System.out.println("N: " + inputStream.readLine());
+                while ((line = inputStream.readLine()) != null)
                 {
-                    String[] theSsid = line.split(LINUX_SSID_STRING_DELIMETER);
-                    for (int i = 1; i < theSsid.length; i++)
+                    System.out.println("LINE: " + line);
+                    if (line.contains(SSID_STRING))
                     {
-                        boolean found = false;
-                        // Check if the network list already contains the network, if not add it
-                        for (int n = 0; n < foundWirelessNetworks.size() && !found; n++)
+                        System.out.println("SSIDLINE: " + line);
+                        String[] theSsid = line.split(LINUX_SSID_STRING_DELIMETER);
+                        for (int i = 1; i < theSsid.length; i++)
                         {
-                            if (foundWirelessNetworks.get(n).compareTo(theSsid[i]) == 0)
+                            boolean found = false;
+                            // Check if the network list already contains the network, if not add it
+                            for (int n = 0; n < foundWirelessNetworks.size() && !found; n++)
                             {
-                                found = true;
+                                if (foundWirelessNetworks.get(n).compareTo(theSsid[i]) == 0)
+                                {
+                                    found = true;
+                                }
                             }
-                        }
 
-                        if (!found)
-                        {
-                            System.out.println("Discovered new network: " + theSsid[i]);
-                            foundWirelessNetworks.add(theSsid[i]);
+                            if (!found)
+                            {
+                                System.out.println("Discovered new network: " + theSsid[i]);
+                                foundWirelessNetworks.add(theSsid[i]);
+                            }
                         }
                     }
                 }
