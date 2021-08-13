@@ -95,11 +95,11 @@ public class NetworkUtils
         }
     }
 
-    public static boolean connectToWifi(String ssid, String password) throws Exception
+    public static ConnectionAttemptStatus connectToWifi(String ssid, String password) throws Exception
     {
         if(!isNetworkChangeSupported())
         {
-            return false;
+            return ConnectionAttemptStatus.OS_NOT_SUPPORTED;
         }
 
         switch (OSUtils.getOperatingSystem())
@@ -108,11 +108,11 @@ public class NetworkUtils
                 return RaspberryPiNetUtils.connectToWifi(ssid, password);
             default:
             case LINUX:
+                return ConnectionAttemptStatus.OS_NOT_SUPPORTED;
             case WINDOWS:
+                return ConnectionAttemptStatus.OS_NOT_SUPPORTED;
             case MAC:
-            case UNDEFINED:
-                throw new Exception("Operating system not supported to connect to WiFi: " +
-                        OSUtils.getOperatingSystemString());
+                return ConnectionAttemptStatus.OS_NOT_SUPPORTED;
         }
     }
 

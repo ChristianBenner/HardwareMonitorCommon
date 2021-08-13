@@ -43,6 +43,8 @@ import java.util.ArrayList;
  */
 public class OSNetworkUtils
 {
+    public static final String CLASS_NAME = OSNetworkUtils.class.getName();
+
     private final static int EXIT_VALUE_SUCCESS = 0;
 
     private final static String WINDOWS_FETCH_NETWORKS_CMD = "netsh wlan show networks mode=Bssid";
@@ -98,7 +100,7 @@ public class OSNetworkUtils
 
     public static ArrayList<String> fetchWirelessDevicesLinux()
     {
-        Logger.log(LogLevel.DEBUG, "OSNetworkUtils", "Fetching wireless device list");
+        Logger.log(LogLevel.DEBUG, CLASS_NAME, "Fetching wireless device list");
 
         // List of found wireless devices
         ArrayList<String> foundWirelessDevices = new ArrayList<>();
@@ -133,7 +135,7 @@ public class OSNetworkUtils
 
     public static ArrayList<String> fetchNetworksLinux()
     {
-        Logger.log(LogLevel.INFO, "OSNetworkUtils", "Fetching available networks");
+        Logger.log(LogLevel.INFO, CLASS_NAME, "Fetching available networks");
 
         // List of found SSIDs
         ArrayList<String> foundWirelessNetworks = new ArrayList<>();
@@ -164,7 +166,7 @@ public class OSNetworkUtils
 
                 processBuilder.redirectErrorStream();
 
-                Logger.log(LogLevel.DEBUG, "OSNetworkUtils", "Scanning device " + NETWORK_DEVICE);
+                Logger.log(LogLevel.DEBUG, CLASS_NAME, "Scanning device " + NETWORK_DEVICE);
 
                 // Start the process
                 Process process = processBuilder.start();
@@ -187,11 +189,12 @@ public class OSNetworkUtils
                         String[] theSsid = line.split(LINUX_SSID_STRING_DELIMETER);
                         for (int i = 1; i < theSsid.length; i++)
                         {
+                            final String networkSsid = theSsid[i];
                             boolean found = false;
                             // Check if the network list already contains the network, if not add it
                             for (int n = 0; n < foundWirelessNetworks.size() && !found; n++)
                             {
-                                if (foundWirelessNetworks.get(n).compareTo(theSsid[i]) == 0)
+                                if (foundWirelessNetworks.get(n).compareTo(networkSsid) == 0)
                                 {
                                     found = true;
                                 }
@@ -199,9 +202,8 @@ public class OSNetworkUtils
 
                             if (!found)
                             {
-                                Logger.log(LogLevel.INFO, "OSNetworkUtils",
-                                        "Discovered network " + theSsid[i]);
-                                foundWirelessNetworks.add(theSsid[i]);
+                                Logger.log(LogLevel.INFO, CLASS_NAME, "Discovered network " + networkSsid);
+                                foundWirelessNetworks.add(networkSsid);
                             }
                         }
                     }

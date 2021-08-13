@@ -25,6 +25,7 @@ package com.bennero.common.osspecific;
 
 import com.bennero.common.logging.LogLevel;
 import com.bennero.common.logging.Logger;
+import com.bennero.common.networking.ConnectionAttemptStatus;
 
 import java.io.*;
 
@@ -38,6 +39,8 @@ import java.io.*;
  */
 public class RaspberryPiNetUtils
 {
+    public static final String CLASS_NAME = RaspberryPiNetUtils.class.getName();
+
     private final static String WIRELESS_CONFIG_DIR = "/etc/wpa_supplicant";
     private final static String WIRELESS_NETWORK_DATA_FILE = WIRELESS_CONFIG_DIR + "/wpa_supplicant.conf";
     private final static String RECONFIGURE_NETWORK_COMMAND = "wpa_cli -i wlan0 reconfigure";
@@ -45,10 +48,10 @@ public class RaspberryPiNetUtils
     private final static String INET_FIELD = "inet";
     private final static int NUMBERS_PER_IP4_ADDRESS = 4;
 
-    public static boolean connectToWifi(String ssid, String password)
+    public static ConnectionAttemptStatus connectToWifi(String ssid, String password)
     {
         // Connection status
-        boolean connected = false;
+        ConnectionAttemptStatus connectionAttemptStatus = ConnectionAttemptStatus.UNKNOWN;
 
         // Check if the configuration directory exist before trying to create or overwrite a file in it. This is also a
         // good indication/check that we are reading/writing in a Raspberry Pi file system
@@ -61,17 +64,34 @@ public class RaspberryPiNetUtils
                 // Reconfigure the network so that the device uses the new network data file
                 if (reconfigureNetwork())
                 {
-                    connected = isConnected();
+                    if(isConnected())
+                    {
+                        connectionAttemptStatus = ConnectionAttemptStatus.SUCCESS;
+                    }
+                    else
+                    {
+                        connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_CONNECT;
+                    }
                 }
+                else
+                {
+                    connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_RECONFIGURE_NETWORK;
+                }
+            }
+            else
+            {
+                connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_WRITE_NETWORK_DATA_FILE;
             }
         }
         else
         {
-            Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Wireless config directory non existent " +
-                    "'" + WIRELESS_CONFIG_DIR + "'");
+            Logger.log(LogLevel.ERROR, CLASS_NAME, "Wireless config directory non existent '" +
+                    WIRELESS_CONFIG_DIR + "'");
+
+            connectionAttemptStatus = ConnectionAttemptStatus.NETWORK_DATA_FILE_NOT_FOUND;
         }
 
-        return connected;
+        return connectionAttemptStatus;
     }
 
     private static boolean writeNetworkDataFile(String ssid, String password)
@@ -86,30 +106,27 @@ public class RaspberryPiNetUtils
         stringBuilder.append("ssid=\"" + ssid + "\"\n");
         stringBuilder.append("psk=\"" + password + "\"\n");
         stringBuilder.append("}\n");
-        Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Created new network file string:\n" +
-                stringBuilder.toString());
+        Logger.log(LogLevel.DEBUG, CLASS_NAME, "Created new network file string:\n" + stringBuilder.toString());
 
         try
         {
             FileOutputStream fileOutputStream = new FileOutputStream(new File(WIRELESS_NETWORK_DATA_FILE));
-            Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Created new network file: " +
-                    WIRELESS_NETWORK_DATA_FILE);
+            Logger.log(LogLevel.DEBUG, CLASS_NAME, "Created new network file: " + WIRELESS_NETWORK_DATA_FILE);
             fileOutputStream.write(stringBuilder.toString().getBytes());
             fileOutputStream.flush();
             fileOutputStream.close();
-            Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Closed network file: " +
-                    WIRELESS_NETWORK_DATA_FILE);
+            Logger.log(LogLevel.DEBUG, CLASS_NAME, "Closed network file: " + WIRELESS_NETWORK_DATA_FILE);
             dataFileWritten = true;
         }
         catch (FileNotFoundException e)
         {
-            Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Cannot create or open file '" +
-                    WIRELESS_NETWORK_DATA_FILE + "'");
-            Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), e.getMessage());
+            Logger.log(LogLevel.ERROR, CLASS_NAME, "Cannot create or open file '" + WIRELESS_NETWORK_DATA_FILE +
+                    "'");
+            Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
         }
         catch (IOException e)
         {
-            Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), e.getMessage());
+            Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
         }
 
         return dataFileWritten;
@@ -119,8 +136,8 @@ public class RaspberryPiNetUtils
     {
         boolean networkReconfigured = false;
 
-        Logger.log(LogLevel.INFO, OSNetworkUtils.class.getName(), "Reconfiguring the devices network");
-        Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Running '" + RECONFIGURE_NETWORK_COMMAND +
+        Logger.log(LogLevel.INFO, CLASS_NAME, "Reconfiguring the devices network");
+        Logger.log(LogLevel.DEBUG, CLASS_NAME, "Running '" + RECONFIGURE_NETWORK_COMMAND +
                 "' to connect to the new network");
 
         try
@@ -130,20 +147,20 @@ public class RaspberryPiNetUtils
             int reconnectCommandVal = reconnectCommand.waitFor();
             networkReconfigured = reconnectCommandVal == 0;
 
-            Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Command '" + RECONFIGURE_NETWORK_COMMAND +
+            Logger.log(LogLevel.DEBUG, CLASS_NAME, "Command '" + RECONFIGURE_NETWORK_COMMAND +
                     "' returned with exit val: " + reconnectCommandVal);
 
             if (!networkReconfigured)
             {
-                Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Failed to reconfigure devices " +
+                Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to reconfigure devices " +
                         "network. Command exited with code: " + reconnectCommandVal);
             }
         }
         catch (IOException | InterruptedException e)
         {
-            Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(),
-                    "Failed to reconfigure network using command '" + RECONFIGURE_NETWORK_COMMAND + "'");
-            Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), e.getMessage());
+            Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to reconfigure network using command '" +
+                    RECONFIGURE_NETWORK_COMMAND + "'");
+            Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
         }
 
         return networkReconfigured;
@@ -155,20 +172,20 @@ public class RaspberryPiNetUtils
 
         try
         {
-            Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Running '" + CHECK_CONNECTION_COMMAND +
+            Logger.log(LogLevel.DEBUG, CLASS_NAME, "Running '" + CHECK_CONNECTION_COMMAND +
                     "' to determine network connectivity");
 
             Runtime runtime = Runtime.getRuntime();
             Process validateCommand = runtime.exec(CHECK_CONNECTION_COMMAND);
             int validateCommandVal = validateCommand.waitFor();
 
-            Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Command '" + CHECK_CONNECTION_COMMAND +
+            Logger.log(LogLevel.DEBUG, CLASS_NAME, "Command '" + CHECK_CONNECTION_COMMAND +
                     "' returned with exit val: " + validateCommandVal);
 
             // Check that the command ran correctly
             if (validateCommandVal != 0)
             {
-                Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Failed to retrieve network " +
+                Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to retrieve network " +
                         "connection status. Command exited with code: " + validateCommandVal);
             }
             else
@@ -191,7 +208,7 @@ public class RaspberryPiNetUtils
                                 String inetFieldContents = words[ip4AddressIndex];
                                 if (inetFieldContents != null && !inetFieldContents.isEmpty())
                                 {
-                                    Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(),
+                                    Logger.log(LogLevel.DEBUG, CLASS_NAME,
                                             "Located INET field with contents: " + inetFieldContents +
                                                     ". Validating IPv4 address");
 
@@ -199,14 +216,14 @@ public class RaspberryPiNetUtils
                                     // xxx.xxx.xxx.xxx
                                     if (inetFieldContents.split("\\.").length == NUMBERS_PER_IP4_ADDRESS)
                                     {
-                                        Logger.log(LogLevel.INFO, OSNetworkUtils.class.getName(),
+                                        Logger.log(LogLevel.INFO, CLASS_NAME,
                                                 "Successfully connected to network. Verified that an IPv4 " +
                                                         "address has been assigned");
                                         connected = true;
                                     }
                                     else
                                     {
-                                        Logger.log(LogLevel.WARNING, OSNetworkUtils.class.getName(), "Invalid " +
+                                        Logger.log(LogLevel.WARNING, CLASS_NAME, "Invalid " +
                                                 "IPv4 address in system information INET field '" + inetFieldContents +
                                                 "'");
                                     }
@@ -214,7 +231,7 @@ public class RaspberryPiNetUtils
                             }
                             else
                             {
-                                Logger.log(LogLevel.WARNING, OSNetworkUtils.class.getName(), "No IPv4 address " +
+                                Logger.log(LogLevel.WARNING, CLASS_NAME, "No IPv4 address " +
                                         "found in system information INET field");
                             }
                         }
