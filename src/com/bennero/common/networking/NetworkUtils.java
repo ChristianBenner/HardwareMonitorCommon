@@ -49,10 +49,19 @@ public class NetworkUtils
     private final static int BYTES_PER_INT = 4;
     private final static int BYTES_PER_LONG = 8;
     private final static String WINDOWS_OS_STRING = "windows";
+    private final static boolean WINDOWS_NETWORK_CHANGE_SUPPORTED = false;
+    private final static boolean LINUX_NETWORK_CHANGE_SUPPORTED = true;
+    private final static boolean MAC_OS_NETWORK_CHANGE_SUPPORTED = false;
+    private final static boolean RASPBERRY_PI_NETWORK_CHANGE_SUPPORTED = true;
 
     // Returns a list of SSIDs for the found wireless networks
     public static ArrayList<String> getWirelessNetworks() throws Exception
     {
+        if(!isNetworkChangeSupported())
+        {
+            return new ArrayList<>();
+        }
+
         switch (OSUtils.getOperatingSystem())
         {
             case WINDOWS:
@@ -68,19 +77,39 @@ public class NetworkUtils
         }
     }
 
-    public static boolean connectToWifi(String ssid, String password) throws Exception
+    public static boolean isNetworkChangeSupported()
     {
         switch (OSUtils.getOperatingSystem())
         {
-            case WINDOWS:
-                return false;
-            case MAC:
-                return false;
+            case RASPBERRY_PI:
+                return RASPBERRY_PI_NETWORK_CHANGE_SUPPORTED;
+            default:
             case LINUX:
+                return LINUX_NETWORK_CHANGE_SUPPORTED;
+            case WINDOWS:
+                return WINDOWS_NETWORK_CHANGE_SUPPORTED;
+            case MAC:
+                return MAC_OS_NETWORK_CHANGE_SUPPORTED;
+            case UNDEFINED:
                 return false;
+        }
+    }
+
+    public static boolean connectToWifi(String ssid, String password) throws Exception
+    {
+        if(!isNetworkChangeSupported())
+        {
+            return false;
+        }
+
+        switch (OSUtils.getOperatingSystem())
+        {
             case RASPBERRY_PI:
                 return RaspberryPiNetUtils.connectToWifi(ssid, password);
             default:
+            case LINUX:
+            case WINDOWS:
+            case MAC:
             case UNDEFINED:
                 throw new Exception("Operating system not supported to connect to WiFi: " +
                         OSUtils.getOperatingSystemString());
