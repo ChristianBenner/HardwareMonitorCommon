@@ -23,6 +23,9 @@
 
 package com.bennero.common;
 
+import com.bennero.common.logging.LogLevel;
+import com.bennero.common.logging.Logger;
+import com.bennero.common.osspecific.OSNetworkUtils;
 import eu.hansolo.medusa.Gauge;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -34,6 +37,9 @@ import javafx.scene.paint.Color;
 
 public class Sensor extends BorderPane
 {
+    // Class name used in logging
+    public static final String CLASS_NAME = Sensor.class.getName();
+
     private int uniqueId;
     private int row;
     private int column;
@@ -123,7 +129,7 @@ public class Sensor extends BorderPane
         }
         else
         {
-            System.err.println("NULL: " + uniqueId + ": " + title);
+            Logger.log(LogLevel.ERROR, CLASS_NAME, "Sensor GUI is invalid so value could not be set");
         }
     }
 

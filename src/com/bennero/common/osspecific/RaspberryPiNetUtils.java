@@ -48,8 +48,11 @@ public class RaspberryPiNetUtils
     private final static String INET_FIELD = "inet";
     private final static int NUMBERS_PER_IP4_ADDRESS = 4;
 
+    // todo: This needs to be made so it is not network card specific (it only works if network device is wlan0)
     public static ConnectionAttemptStatus connectToWifi(String ssid, String password)
     {
+        Logger.log(LogLevel.INFO, CLASS_NAME, "Attempting to connect to network " + ssid);
+
         // Connection status
         ConnectionAttemptStatus connectionAttemptStatus = ConnectionAttemptStatus.UNKNOWN;
 

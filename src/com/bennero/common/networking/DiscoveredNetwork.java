@@ -23,17 +23,52 @@
 
 package com.bennero.common.networking;
 
-// Different possible connection failure cases
-public enum ConnectionAttemptStatus
+public class DiscoveredNetwork
 {
-    SUCCESS,
-    OS_NOT_SUPPORTED,
-    FAILED_TO_WRITE_NETWORK_DATA_FILE,
-    NETWORK_DATA_FILE_NOT_FOUND,
-    FAILED_TO_RECONFIGURE_NETWORK,
-    FAILED_TO_CONNECT,
-    INCORRECT_PASSWORD,
-    PASSWORD_REQUIRED,
-    FAILED_TO_RUN_CONNECT_COMMAND,
-    UNKNOWN
+    private final String networkDevice;
+    private final String networkSsid;
+    private boolean deviceInString;
+
+    public DiscoveredNetwork(final String networkDevice, final String networkSsid)
+    {
+        this.networkDevice = networkDevice;
+        this.networkSsid = networkSsid;
+        this.deviceInString = false;
+    }
+
+    public String getNetworkDevice()
+    {
+        return networkDevice;
+    }
+
+    public String getNetworkSsid()
+    {
+        return networkSsid;
+    }
+
+    // Set if the device string should be in the toString return
+    public void setIncludeDeviceStr(boolean state)
+    {
+        this.deviceInString = state;
+    }
+
+    // Return true if the device and ssid values match
+    public boolean compare(final DiscoveredNetwork discoveredNetwork)
+    {
+        final String otherNetworkDevice = discoveredNetwork.getNetworkDevice();
+        final String otherNetworkSsid = discoveredNetwork.getNetworkSsid();
+
+        return networkDevice.compareTo(otherNetworkDevice) == 0 && networkSsid.compareTo(otherNetworkSsid) == 0;
+    }
+
+    @Override
+    public String toString()
+    {
+        if(deviceInString)
+        {
+            return networkSsid + " (" + networkDevice + ")";
+        }
+
+        return networkSsid;
+    }
 }

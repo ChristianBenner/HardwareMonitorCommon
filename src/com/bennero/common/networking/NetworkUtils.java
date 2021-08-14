@@ -23,6 +23,7 @@
 
 package com.bennero.common.networking;
 
+import com.bennero.common.osspecific.LinuxNetUtils;
 import com.bennero.common.osspecific.OSNetworkUtils;
 import com.bennero.common.osspecific.OSUtils;
 import com.bennero.common.osspecific.RaspberryPiNetUtils;
@@ -55,11 +56,11 @@ public class NetworkUtils
     private final static boolean RASPBERRY_PI_NETWORK_CHANGE_SUPPORTED = true;
 
     // Returns a list of SSIDs for the found wireless networks
-    public static ArrayList<String> getWirelessNetworks() throws Exception
+    public static DiscoveredNetworkList getWirelessNetworks() throws Exception
     {
         if(!isNetworkChangeSupported())
         {
-            return new ArrayList<>();
+            return new DiscoveredNetworkList();
         }
 
         switch (OSUtils.getOperatingSystem())
@@ -95,7 +96,7 @@ public class NetworkUtils
         }
     }
 
-    public static ConnectionAttemptStatus connectToWifi(String ssid, String password) throws Exception
+    public static ConnectionAttemptStatus connectToWifi(String networkDevice, String ssid, String password)
     {
         if(!isNetworkChangeSupported())
         {
@@ -108,7 +109,7 @@ public class NetworkUtils
                 return RaspberryPiNetUtils.connectToWifi(ssid, password);
             default:
             case LINUX:
-                return ConnectionAttemptStatus.OS_NOT_SUPPORTED;
+                return LinuxNetUtils.connectToWifi(networkDevice, ssid, password);
             case WINDOWS:
                 return ConnectionAttemptStatus.OS_NOT_SUPPORTED;
             case MAC:
