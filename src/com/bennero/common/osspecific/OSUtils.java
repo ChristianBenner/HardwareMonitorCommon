@@ -23,6 +23,9 @@
 
 package com.bennero.common.osspecific;
 
+import com.bennero.common.logging.LogLevel;
+import com.bennero.common.logging.Logger;
+
 import java.io.*;
 
 /**
@@ -34,8 +37,36 @@ import java.io.*;
  */
 public class OSUtils
 {
+    //
+    private static final String CLASS_NAME = OSUtils.class.getSimpleName();
+
     private final static String RASPBERRY_PI_OS_STRING = "Raspberry Pi";
     private final static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
+
+    public static String getApplicationDataDirectory()
+    {
+        String appDataDirectory;
+
+        switch (getOperatingSystem())
+        {
+            case LINUX:
+            case RASPBERRY_PI:
+            case MAC:
+                appDataDirectory = System.getProperty("user.home") + "/.BennerHardwareMonitor";
+                break;
+            case WINDOWS:
+                appDataDirectory = System.getenv("APPDATA") + "\\BennerHardwareMonitor";
+                break;
+            case UNDEFINED:
+            default:
+                appDataDirectory = System.getProperty("user.home") + "/.BennerHardwareMonitor";
+                Logger.log(LogLevel.WARNING, CLASS_NAME, "Unknown operating system '" +
+                        getOperatingSystemString() + "', using default home directory '" + appDataDirectory + "'");
+                break;
+        }
+
+        return appDataDirectory;
+    }
 
     public static String getOperatingSystemString()
     {

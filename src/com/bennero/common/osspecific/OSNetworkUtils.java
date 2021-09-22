@@ -148,6 +148,8 @@ public class OSNetworkUtils
     {
         Logger.log(LogLevel.INFO, CLASS_NAME, "Fetching available networks");
 
+        boolean errorOccurred = false;
+
         // List of found SSIDs
         DiscoveredNetworkList foundWirelessNetworks = new DiscoveredNetworkList();
 
@@ -230,16 +232,19 @@ public class OSNetworkUtils
                         Logger.log(LogLevel.DEBUG, CLASS_NAME, "iw command ran successfully");
                         break;
                     case IW_CODE_NETWORK_DOWN:
+                        errorOccurred = true;
                         Logger.log(LogLevel.ERROR, CLASS_NAME, "No wireless network device available");
                         foundWirelessNetworks.setError("No wireless network device available",
                                 IW_CODE_NETWORK_DOWN);
                         break;
                     case IW_CODE_DEVICE_BUSY:
+                        errorOccurred = true;
                         Logger.log(LogLevel.ERROR, CLASS_NAME, "Network device is busy");
                         foundWirelessNetworks.setError("Network device is busy",
                                 IW_CODE_DEVICE_BUSY);
                         break;
                     default:
+                        errorOccurred = true;
                         Logger.log(LogLevel.ERROR, CLASS_NAME, "iw command exited with error code " +
                                 executionStatus);
                         foundWirelessNetworks.setError("Unknown error scanning network (iw return code: " +
@@ -254,13 +259,13 @@ public class OSNetworkUtils
         }
 
         // Raise an error if no wireless devices or networks have been found
-        if(foundWirelessDevices.isEmpty())
+        if(!errorOccurred && foundWirelessDevices.isEmpty())
         {
             Logger.log(LogLevel.WARNING, CLASS_NAME, "Failed to find any wireless network devices");
             foundWirelessNetworks.setError("Failed to find any wireless network devices",
                     ERROR_CODE_NO_DEVICES_FOUND);
         }
-        else if(foundWirelessNetworks.isEmpty())
+        else if(!errorOccurred && foundWirelessNetworks.isEmpty())
         {
             Logger.log(LogLevel.WARNING, CLASS_NAME, "Failed to find any wireless networks");
             foundWirelessNetworks.setError("Failed to find any wireless networks",
