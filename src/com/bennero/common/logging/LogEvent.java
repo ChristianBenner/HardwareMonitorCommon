@@ -28,30 +28,26 @@ import javafx.event.Event;
 /**
  * LogEvent is created and fired when a log is made and a listener is listening to the Logger
  *
- * @see         Logger
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @see Logger
+ * @since 1.0
  */
-public class LogEvent extends Event
-{
+public class LogEvent extends Event {
     private final String logText;
     private final LogLevel logLevel;
 
-    public LogEvent(String logText, LogLevel logLevel)
-    {
+    public LogEvent(String logText, LogLevel logLevel) {
         super(null);
         this.logText = logText;
         this.logLevel = logLevel;
     }
 
-    public String getLogText()
-    {
+    public String getLogText() {
         return logText;
     }
 
-    public LogLevel getLogLevel()
-    {
+    public LogLevel getLogLevel() {
         return logLevel;
     }
 }

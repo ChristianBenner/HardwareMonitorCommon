@@ -26,12 +26,11 @@ package com.bennero.common.messages;
 /**
  * Defines a page data messages data structure (position of each value within the message data)
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class PageDataPositions
-{
+public class PageDataPositions {
     public final static int ID_POS = 1;
     public final static int COLOUR_R_POS = 2;
     public final static int COLOUR_G_POS = 3;

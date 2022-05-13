@@ -32,30 +32,25 @@ import java.io.IOException;
  * Raspberry Pi OS specific screen utility static functions. Provides the ability to enable or disable the display
  * connected to a Raspberry Pi device.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class RaspberryPiScreenUtils
-{
+public class RaspberryPiScreenUtils {
     private final static String TURN_DISPLAY_ON = "xset -display :0.0 dpms force on";
     private final static String TURN_DISPLAY_OFF = "xset -display :0.0 dpms force off";
     private static boolean s_display_enabled = true;
     // if turning on the display goes back to black use 'sleep 1 && xset -display :0.0 dpms force off '
 
-    public static boolean isDisplayEnabled()
-    {
+    public static boolean isDisplayEnabled() {
         return s_display_enabled;
     }
 
-    public static void setDisplayEnabled(boolean state)
-    {
+    public static void setDisplayEnabled(boolean state) {
         final String command = state ? TURN_DISPLAY_ON : TURN_DISPLAY_OFF;
 
-        if (OSUtils.getOperatingSystem() == OSUtils.OperatingSystem.RASPBERRY_PI)
-        {
-            try
-            {
+        if (OSUtils.getOperatingSystem() == OSUtils.OperatingSystem.RASPBERRY_PI) {
+            try {
                 Runtime runtime = Runtime.getRuntime();
                 Process reconnectCommand = runtime.exec(command);
                 int reconnectCommandVal = reconnectCommand.waitFor();
@@ -63,25 +58,18 @@ public class RaspberryPiScreenUtils
                 Logger.log(LogLevel.DEBUG, OSNetworkUtils.class.getName(), "Command '" + command +
                         "' returned with exit val: " + reconnectCommandVal);
 
-                if (reconnectCommandVal != 0)
-                {
+                if (reconnectCommandVal != 0) {
                     Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Failed to turn display " +
                             (state ? "on" : "off") + "using command '" + command + "'");
-                }
-                else
-                {
+                } else {
                     s_display_enabled = state;
                 }
-            }
-            catch (IOException | InterruptedException e)
-            {
+            } catch (IOException | InterruptedException e) {
                 Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Failed to run display command '" +
                         command + "'");
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             Logger.log(LogLevel.ERROR, OSNetworkUtils.class.getName(), "Attempting to run a Raspberry Pi OS " +
                     "command on " + OSUtils.getOperatingSystemString());
         }

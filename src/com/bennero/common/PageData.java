@@ -32,12 +32,11 @@ import java.util.List;
  * Stores all of the data associated to a customisable Page (the pages that the user can configure to display hardware
  * sensor data).
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class PageData implements PageTemplate
-{
+public class PageData implements PageTemplate {
     private int id;
     private Color colour;
     private Color titleColour;
@@ -72,8 +71,7 @@ public class PageData implements PageTemplate
                     final int titleAlignment,
                     final String subheading,
                     final boolean subheadingEnabled,
-                    final int subheadingAlignment)
-    {
+                    final int subheadingAlignment) {
         this.id = id;
         this.colour = colour;
         this.titleColour = titleColour;
@@ -95,223 +93,185 @@ public class PageData implements PageTemplate
     }
 
     @Override
-    public int getUniqueId()
-    {
+    public int getUniqueId() {
         return id;
     }
 
     @Override
-    public void setUniqueId(int id)
-    {
+    public void setUniqueId(int id) {
         this.id = id;
     }
 
     @Override
-    public Color getColour()
-    {
+    public Color getColour() {
         return colour;
     }
 
     @Override
-    public void setColour(Color colour)
-    {
+    public void setColour(Color colour) {
         this.colour = colour;
     }
 
     @Override
-    public Color getTitleColour()
-    {
+    public Color getTitleColour() {
         return titleColour;
     }
 
     @Override
-    public void setTitleColour(Color titleColour)
-    {
+    public void setTitleColour(Color titleColour) {
         this.titleColour = titleColour;
     }
 
     @Override
-    public Color getSubtitleColour()
-    {
+    public Color getSubtitleColour() {
         return subtitleColour;
     }
 
     @Override
-    public void setSubtitleColour(Color subtitleColour)
-    {
+    public void setSubtitleColour(Color subtitleColour) {
         this.subtitleColour = subtitleColour;
     }
 
     @Override
-    public int getRows()
-    {
+    public int getRows() {
         return rows;
     }
 
     @Override
-    public void setRows(int rows)
-    {
+    public void setRows(int rows) {
         this.rows = rows;
     }
 
     @Override
-    public int getColumns()
-    {
+    public int getColumns() {
         return columns;
     }
 
     @Override
-    public void setColumns(int columns)
-    {
+    public void setColumns(int columns) {
         this.columns = columns;
     }
 
     @Override
-    public int getNextPageId()
-    {
+    public int getNextPageId() {
         return nextPageId;
     }
 
     @Override
-    public void setNextPageId(int nextPageId)
-    {
+    public void setNextPageId(int nextPageId) {
         this.nextPageId = nextPageId;
     }
 
     @Override
-    public int getTransitionType()
-    {
+    public int getTransitionType() {
         return transitionType;
     }
 
     @Override
-    public void setTransitionType(int transitionType)
-    {
+    public void setTransitionType(int transitionType) {
         this.transitionType = transitionType;
     }
 
     @Override
-    public int getTransitionTime()
-    {
+    public int getTransitionTime() {
         return transitionTime;
     }
 
     @Override
-    public void setTransitionTime(int transitionTime)
-    {
+    public void setTransitionTime(int transitionTime) {
         this.transitionTime = transitionTime;
     }
 
     @Override
-    public int getDurationMs()
-    {
+    public int getDurationMs() {
         return durationMs;
     }
 
     @Override
-    public void setDurationMs(int durationMs)
-    {
+    public void setDurationMs(int durationMs) {
         this.durationMs = durationMs;
     }
 
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
     @Override
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
     @Override
-    public boolean isTitleEnabled()
-    {
+    public boolean isTitleEnabled() {
         return titleEnabled;
     }
 
     @Override
-    public void setTitleEnabled(boolean titleEnabled)
-    {
+    public void setTitleEnabled(boolean titleEnabled) {
         this.titleEnabled = titleEnabled;
     }
 
     @Override
-    public int getTitleAlignment()
-    {
+    public int getTitleAlignment() {
         return titleAlignment;
     }
 
     @Override
-    public void setTitleAlignment(int titleAlignment)
-    {
+    public void setTitleAlignment(int titleAlignment) {
         this.titleAlignment = titleAlignment;
     }
 
     @Override
-    public boolean isSubtitleEnabled()
-    {
+    public boolean isSubtitleEnabled() {
         return subtitleEnabled;
     }
 
     @Override
-    public void setSubtitleEnabled(boolean subtitleEnabled)
-    {
+    public void setSubtitleEnabled(boolean subtitleEnabled) {
         this.subtitleEnabled = subtitleEnabled;
     }
 
     @Override
-    public String getSubtitle()
-    {
+    public String getSubtitle() {
         return subtitle;
     }
 
     @Override
-    public void setSubtitle(String subtitle)
-    {
+    public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
     }
 
     @Override
-    public int getSubtitleAlignment()
-    {
+    public int getSubtitleAlignment() {
         return subtitleAlignment;
     }
 
     @Override
-    public void setSubtitleAlignment(int subtitleAlignment)
-    {
+    public void setSubtitleAlignment(int subtitleAlignment) {
         this.subtitleAlignment = subtitleAlignment;
     }
 
     @Override
-    public List<Sensor> getSensorList()
-    {
+    public List<Sensor> getSensorList() {
         return sensorList;
     }
 
     @Override
-    public void addSensor(Sensor sensor)
-    {
+    public void addSensor(Sensor sensor) {
         sensorList.add(sensor);
     }
 
     @Override
-    public void removeSensor(Sensor sensor)
-    {
+    public void removeSensor(Sensor sensor) {
         sensorList.remove(sensor);
     }
 
     @Override
-    public boolean containsSensor(Sensor sensor)
-    {
+    public boolean containsSensor(Sensor sensor) {
         boolean found = false;
-        for (int i = 0; i < sensorList.size() && !found; i++)
-        {
-            if (sensorList.get(i) == sensor)
-            {
+        for (int i = 0; i < sensorList.size() && !found; i++) {
+            if (sensorList.get(i) == sensor) {
                 found = true;
             }
         }
@@ -320,12 +280,10 @@ public class PageData implements PageTemplate
     }
 
     @Override
-    public boolean isSpaceFree(Sensor sensor)
-    {
+    public boolean isSpaceFree(Sensor sensor) {
         boolean spaceFree = true;
 
-        for (int i = 0; i < sensorList.size() && spaceFree; i++)
-        {
+        for (int i = 0; i < sensorList.size() && spaceFree; i++) {
             Sensor existingSensor = sensorList.get(i);
 
             int row = sensor.getRow();
@@ -342,8 +300,7 @@ public class PageData implements PageTemplate
             boolean withinColumn = (column >= placedStartColumn && column < placedEndColumn) ||
                     (endColumn > placedStartColumn && endColumn <= placedEndColumn);
 
-            if (withinRow && withinColumn)
-            {
+            if (withinRow && withinColumn) {
                 spaceFree = false;
             }
         }
@@ -352,8 +309,7 @@ public class PageData implements PageTemplate
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return title;
     }
 }

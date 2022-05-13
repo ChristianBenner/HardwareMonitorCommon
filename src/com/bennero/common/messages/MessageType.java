@@ -27,12 +27,11 @@ package com.bennero.common.messages;
  * Constants for different types of messages. Each message has a unique ID represented as a byte for efficient usage in
  * networking or other message protocols.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class MessageType
-{
+public class MessageType {
     public static final int DATA = 0x02;
     public static final int PAGE_SETUP = 0x03;
     public static final byte SENSOR_SETUP = 0x04;

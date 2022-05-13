@@ -37,12 +37,11 @@ import java.util.Random;
  * usage in networking or other message protocols. The class can also create transition objects that can be used on
  * user interface components.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class TransitionType
-{
+public class TransitionType {
     public final static int NUM_TRANSITIONS = 6;
 
     public final static byte CUT = 0x00;
@@ -52,18 +51,15 @@ public class TransitionType
     public final static byte SWIPE_UP = 0x04;
     public final static byte FADE = 0x05;
 
-    public static byte getRandomTransition(Random random)
-    {
+    public static byte getRandomTransition(Random random) {
         return (byte) random.nextInt(NUM_TRANSITIONS);
     }
 
     public static Transition getTransition(final int value,
                                            final int durationMs,
                                            final StackPane root,
-                                           final Node finalNext)
-    {
-        switch (value)
-        {
+                                           final Node finalNext) {
+        switch (value) {
             default:
             case TransitionType.CUT:
                 return null;

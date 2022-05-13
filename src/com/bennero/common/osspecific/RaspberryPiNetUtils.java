@@ -33,12 +33,11 @@ import java.io.*;
  * Raspberry Pi OS specific network utility static functions. Provides the ability to command the OS to connect to a
  * specific network.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class RaspberryPiNetUtils
-{
+public class RaspberryPiNetUtils {
     public static final String CLASS_NAME = RaspberryPiNetUtils.class.getName();
 
     private final static String WIRELESS_CONFIG_DIR = "/etc/wpa_supplicant";
@@ -49,8 +48,7 @@ public class RaspberryPiNetUtils
     private final static int NUMBERS_PER_IP4_ADDRESS = 4;
 
     // todo: This needs to be made so it is not network card specific (it only works if network device is wlan0)
-    public static ConnectionAttemptStatus connectToWifi(String ssid, String password)
-    {
+    public static ConnectionAttemptStatus connectToWifi(String ssid, String password) {
         Logger.log(LogLevel.INFO, CLASS_NAME, "Attempting to connect to network " + ssid);
 
         // Connection status
@@ -59,35 +57,23 @@ public class RaspberryPiNetUtils
         // Check if the configuration directory exist before trying to create or overwrite a file in it. This is also a
         // good indication/check that we are reading/writing in a Raspberry Pi file system
         final File WIRELESS_CONFIG_DIR_FILE = new File(WIRELESS_CONFIG_DIR);
-        if (WIRELESS_CONFIG_DIR_FILE.exists())
-        {
+        if (WIRELESS_CONFIG_DIR_FILE.exists()) {
             // Attempt to write the network data to the network data file
-            if (writeNetworkDataFile(ssid, password))
-            {
+            if (writeNetworkDataFile(ssid, password)) {
                 // Reconfigure the network so that the device uses the new network data file
-                if (reconfigureNetwork())
-                {
-                    if(isConnected())
-                    {
+                if (reconfigureNetwork()) {
+                    if (isConnected()) {
                         connectionAttemptStatus = ConnectionAttemptStatus.SUCCESS;
-                    }
-                    else
-                    {
+                    } else {
                         connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_CONNECT;
                     }
-                }
-                else
-                {
+                } else {
                     connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_RECONFIGURE_NETWORK;
                 }
-            }
-            else
-            {
+            } else {
                 connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_WRITE_NETWORK_DATA_FILE;
             }
-        }
-        else
-        {
+        } else {
             Logger.log(LogLevel.ERROR, CLASS_NAME, "Wireless config directory non existent '" +
                     WIRELESS_CONFIG_DIR + "'");
 
@@ -97,8 +83,7 @@ public class RaspberryPiNetUtils
         return connectionAttemptStatus;
     }
 
-    private static boolean writeNetworkDataFile(String ssid, String password)
-    {
+    private static boolean writeNetworkDataFile(String ssid, String password) {
         boolean dataFileWritten = false;
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -111,8 +96,7 @@ public class RaspberryPiNetUtils
         stringBuilder.append("}\n");
         Logger.log(LogLevel.DEBUG, CLASS_NAME, "Created new network file string:\n" + stringBuilder.toString());
 
-        try
-        {
+        try {
             FileOutputStream fileOutputStream = new FileOutputStream(new File(WIRELESS_NETWORK_DATA_FILE));
             Logger.log(LogLevel.DEBUG, CLASS_NAME, "Created new network file: " + WIRELESS_NETWORK_DATA_FILE);
             fileOutputStream.write(stringBuilder.toString().getBytes());
@@ -120,31 +104,25 @@ public class RaspberryPiNetUtils
             fileOutputStream.close();
             Logger.log(LogLevel.DEBUG, CLASS_NAME, "Closed network file: " + WIRELESS_NETWORK_DATA_FILE);
             dataFileWritten = true;
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             Logger.log(LogLevel.ERROR, CLASS_NAME, "Cannot create or open file '" + WIRELESS_NETWORK_DATA_FILE +
                     "'");
             Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
         }
 
         return dataFileWritten;
     }
 
-    private static boolean reconfigureNetwork()
-    {
+    private static boolean reconfigureNetwork() {
         boolean networkReconfigured = false;
 
         Logger.log(LogLevel.INFO, CLASS_NAME, "Reconfiguring the devices network");
         Logger.log(LogLevel.DEBUG, CLASS_NAME, "Running '" + RECONFIGURE_NETWORK_COMMAND +
                 "' to connect to the new network");
 
-        try
-        {
+        try {
             Runtime runtime = Runtime.getRuntime();
             Process reconnectCommand = runtime.exec(RECONFIGURE_NETWORK_COMMAND);
             int reconnectCommandVal = reconnectCommand.waitFor();
@@ -153,14 +131,11 @@ public class RaspberryPiNetUtils
             Logger.log(LogLevel.DEBUG, CLASS_NAME, "Command '" + RECONFIGURE_NETWORK_COMMAND +
                     "' returned with exit val: " + reconnectCommandVal);
 
-            if (!networkReconfigured)
-            {
+            if (!networkReconfigured) {
                 Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to reconfigure devices " +
                         "network. Command exited with code: " + reconnectCommandVal);
             }
-        }
-        catch (IOException | InterruptedException e)
-        {
+        } catch (IOException | InterruptedException e) {
             Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to reconfigure network using command '" +
                     RECONFIGURE_NETWORK_COMMAND + "'");
             Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
@@ -169,12 +144,10 @@ public class RaspberryPiNetUtils
         return networkReconfigured;
     }
 
-    private static boolean isConnected()
-    {
+    private static boolean isConnected() {
         boolean connected = false;
 
-        try
-        {
+        try {
             Logger.log(LogLevel.DEBUG, CLASS_NAME, "Running '" + CHECK_CONNECTION_COMMAND +
                     "' to determine network connectivity");
 
@@ -186,54 +159,41 @@ public class RaspberryPiNetUtils
                     "' returned with exit val: " + validateCommandVal);
 
             // Check that the command ran correctly
-            if (validateCommandVal != 0)
-            {
+            if (validateCommandVal != 0) {
                 Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to retrieve network " +
                         "connection status. Command exited with code: " + validateCommandVal);
-            }
-            else
-            {
+            } else {
                 BufferedReader inputStream = new BufferedReader(new InputStreamReader(validateCommand.
                         getInputStream()));
                 String line = null;
-                while ((line = inputStream.readLine()) != null && !connected)
-                {
+                while ((line = inputStream.readLine()) != null && !connected) {
                     // Check if the line contains the whole word 'inet'
                     String[] words = line.split(" ");
-                    for (int i = 0; i < words.length; i++)
-                    {
-                        if (words[i].compareTo(INET_FIELD) == 0)
-                        {
+                    for (int i = 0; i < words.length; i++) {
+                        if (words[i].compareTo(INET_FIELD) == 0) {
                             // We should expect the next word to be an IP address (xxx.xxx.xxx.xxx)
                             final int ip4AddressIndex = i + 1;
-                            if (ip4AddressIndex < words.length)
-                            {
+                            if (ip4AddressIndex < words.length) {
                                 String inetFieldContents = words[ip4AddressIndex];
-                                if (inetFieldContents != null && !inetFieldContents.isEmpty())
-                                {
+                                if (inetFieldContents != null && !inetFieldContents.isEmpty()) {
                                     Logger.log(LogLevel.DEBUG, CLASS_NAME,
                                             "Located INET field with contents: " + inetFieldContents +
                                                     ". Validating IPv4 address");
 
                                     // Validation is just checking that four integers have been given in a format
                                     // xxx.xxx.xxx.xxx
-                                    if (inetFieldContents.split("\\.").length == NUMBERS_PER_IP4_ADDRESS)
-                                    {
+                                    if (inetFieldContents.split("\\.").length == NUMBERS_PER_IP4_ADDRESS) {
                                         Logger.log(LogLevel.INFO, CLASS_NAME,
                                                 "Successfully connected to network. Verified that an IPv4 " +
                                                         "address has been assigned");
                                         connected = true;
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         Logger.log(LogLevel.WARNING, CLASS_NAME, "Invalid " +
                                                 "IPv4 address in system information INET field '" + inetFieldContents +
                                                 "'");
                                     }
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 Logger.log(LogLevel.WARNING, CLASS_NAME, "No IPv4 address " +
                                         "found in system information INET field");
                             }
@@ -242,13 +202,9 @@ public class RaspberryPiNetUtils
                 }
             }
 
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

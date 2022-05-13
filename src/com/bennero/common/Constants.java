@@ -26,12 +26,11 @@ package com.bennero.common;
 /**
  * Contains constants that are used by both editor and monitor.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class Constants
-{
+public class Constants {
     public static final int SENSOR_POLL_RATE_MS = 1500;
 
     public static final int EXIT_ERROR_CODE_NATIVE_SENSOR_UPDATE_FAILED = 1;

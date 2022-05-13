@@ -23,38 +23,32 @@
 
 package com.bennero.common.networking;
 
-public class DiscoveredNetwork
-{
+public class DiscoveredNetwork {
     private final String networkDevice;
     private final String networkSsid;
     private boolean deviceInString;
 
-    public DiscoveredNetwork(final String networkDevice, final String networkSsid)
-    {
+    public DiscoveredNetwork(final String networkDevice, final String networkSsid) {
         this.networkDevice = networkDevice;
         this.networkSsid = networkSsid;
         this.deviceInString = false;
     }
 
-    public String getNetworkDevice()
-    {
+    public String getNetworkDevice() {
         return networkDevice;
     }
 
-    public String getNetworkSsid()
-    {
+    public String getNetworkSsid() {
         return networkSsid;
     }
 
     // Set if the device string should be in the toString return
-    public void setIncludeDeviceStr(boolean state)
-    {
+    public void setIncludeDeviceStr(boolean state) {
         this.deviceInString = state;
     }
 
     // Return true if the device and ssid values match
-    public boolean compare(final DiscoveredNetwork discoveredNetwork)
-    {
+    public boolean compare(final DiscoveredNetwork discoveredNetwork) {
         final String otherNetworkDevice = discoveredNetwork.getNetworkDevice();
         final String otherNetworkSsid = discoveredNetwork.getNetworkSsid();
 
@@ -62,10 +56,8 @@ public class DiscoveredNetwork
     }
 
     @Override
-    public String toString()
-    {
-        if(deviceInString)
-        {
+    public String toString() {
+        if (deviceInString) {
             return networkSsid + " (" + networkDevice + ")";
         }
 

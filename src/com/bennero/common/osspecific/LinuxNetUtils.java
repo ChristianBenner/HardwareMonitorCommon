@@ -31,22 +31,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class LinuxNetUtils
-{
+public class LinuxNetUtils {
     public static final String CLASS_NAME = LinuxNetUtils.class.getName();
 
     private static final int NMCLI_CODE_SUCCESS = 0;
     private static final int NMCLI_CODE_INVALID_PASSWORD = 1;
     private static final int NMCLI_NO_PASSWORD_PROVIDED = 2;
 
-    public static ConnectionAttemptStatus connectToWifi(String networkDevice, String ssid, String password)
-    {
+    public static ConnectionAttemptStatus connectToWifi(String networkDevice, String ssid, String password) {
         Logger.log(LogLevel.INFO, CLASS_NAME, "Attempting to connect to network " + ssid);
 
         ConnectionAttemptStatus connectionAttemptStatus;
 
-        try
-        {
+        try {
             final String CONNECT_COMMAND = "nmcli dev wifi connect " + ssid + " password " + password;
             Logger.log(LogLevel.DEBUG, CLASS_NAME, "Running command '" + CONNECT_COMMAND + "'");
 
@@ -56,16 +53,14 @@ public class LinuxNetUtils
             // Fetch and print out any errors that have occured
             BufferedReader errorStream = new BufferedReader(new InputStreamReader(connectProcess.getErrorStream()));
             String error;
-            while ((error = errorStream.readLine()) != null)
-            {
+            while ((error = errorStream.readLine()) != null) {
                 Logger.log(LogLevel.ERROR, CLASS_NAME, "Connect command output << " + error);
             }
 
             int executionStatus = connectProcess.waitFor();
             System.out.println("EXECUTION STATUS: " + executionStatus);
 
-            switch (executionStatus)
-            {
+            switch (executionStatus) {
                 case NMCLI_CODE_SUCCESS:
                     Logger.log(LogLevel.INFO, CLASS_NAME, "Connected to the network " + ssid);
                     connectionAttemptStatus = ConnectionAttemptStatus.SUCCESS;
@@ -84,14 +79,12 @@ public class LinuxNetUtils
                     connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_CONNECT;
                     break;
             }
-        }
-        catch (IOException | InterruptedException e)
-        {
+        } catch (IOException | InterruptedException e) {
             Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to run connect command");
             Logger.log(LogLevel.ERROR, CLASS_NAME, e.getMessage());
             connectionAttemptStatus = ConnectionAttemptStatus.FAILED_TO_RUN_CONNECT_COMMAND;
         }
 
-       return connectionAttemptStatus;
+        return connectionAttemptStatus;
     }
 }

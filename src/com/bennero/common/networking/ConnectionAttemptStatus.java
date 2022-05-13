@@ -24,8 +24,7 @@
 package com.bennero.common.networking;
 
 // Different possible connection failure cases
-public enum ConnectionAttemptStatus
-{
+public enum ConnectionAttemptStatus {
     SUCCESS,
     OS_NOT_SUPPORTED,
     FAILED_TO_WRITE_NETWORK_DATA_FILE,

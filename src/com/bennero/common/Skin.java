@@ -29,12 +29,11 @@ import eu.hansolo.medusa.Gauge;
  * Constants for different types of Gauge skins. Each Gauge Skin has a unique ID represented as a byte for efficient
  * usage in networking or other message protocols.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class Skin
-{
+public class Skin {
     public final static byte SPACE = 0x01;
     public final static byte GRAPH = 0x02;
     public final static byte FLAT = 0x03;
@@ -85,33 +84,27 @@ public class Skin
     private Gauge.SkinType skinType;
     private int colourSupportFlags;
 
-    public Skin(byte code, String name, Gauge.SkinType skinType, int colourSupportFlags)
-    {
+    public Skin(byte code, String name, Gauge.SkinType skinType, int colourSupportFlags) {
         this.code = code;
         this.name = name;
         this.skinType = skinType;
         this.colourSupportFlags = colourSupportFlags;
     }
 
-    public byte getCode()
-    {
+    public byte getCode() {
         return code;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public Gauge.SkinType getSkinType()
-    {
+    public Gauge.SkinType getSkinType() {
         return skinType;
     }
 
-    public boolean checkSupport(int supportFlag)
-    {
-        if ((supportFlag & colourSupportFlags) == supportFlag)
-        {
+    public boolean checkSupport(int supportFlag) {
+        if ((supportFlag & colourSupportFlags) == supportFlag) {
             return true;
         }
 

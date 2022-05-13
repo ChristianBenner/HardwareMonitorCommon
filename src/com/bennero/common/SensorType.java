@@ -27,12 +27,11 @@ package com.bennero.common;
  * Constants for different types of hardware sensors. Each Hardware Sensor type has a unique ID represented as a byte
  * for efficient usage in networking or other message protocols.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class SensorType
-{
+public class SensorType {
     public final static byte VOLTAGE = 0x01;
     public final static byte CLOCK = 0x02;
     public final static byte TEMPERATURE = 0x03;
@@ -47,10 +46,8 @@ public class SensorType
     public final static byte SMALL_DATA = 0x0C;
     public final static byte THROUGHPUT = 0x0D;
 
-    public static String getSuffix(final byte sensorType)
-    {
-        switch (sensorType)
-        {
+    public static String getSuffix(final byte sensorType) {
+        switch (sensorType) {
             case VOLTAGE:
                 return "V";
             case CLOCK:

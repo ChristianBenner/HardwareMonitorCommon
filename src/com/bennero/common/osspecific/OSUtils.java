@@ -31,24 +31,21 @@ import java.io.*;
 /**
  * Static utility functions for operating system related tasks such as determining the current operating system.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class OSUtils
-{
+public class OSUtils {
     //
     private static final String CLASS_NAME = OSUtils.class.getSimpleName();
 
     private final static String RASPBERRY_PI_OS_STRING = "Raspberry Pi";
     private final static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
-    public static String getApplicationDataDirectory()
-    {
+    public static String getApplicationDataDirectory() {
         String appDataDirectory;
 
-        switch (getOperatingSystem())
-        {
+        switch (getOperatingSystem()) {
             case LINUX:
             case RASPBERRY_PI:
             case MAC:
@@ -68,76 +65,59 @@ public class OSUtils
         return appDataDirectory;
     }
 
-    public static String getOperatingSystemString()
-    {
-        if (isRaspberryPi())
-        {
+    public static String getOperatingSystemString() {
+        if (isRaspberryPi()) {
             return RASPBERRY_PI_OS_STRING;
         }
 
         return OPERATING_SYSTEM;
     }
 
-    public static OperatingSystem getOperatingSystem()
-    {
-        if (isWindows())
-        {
+    public static OperatingSystem getOperatingSystem() {
+        if (isWindows()) {
             return OperatingSystem.WINDOWS;
         }
 
-        if (isMac())
-        {
+        if (isMac()) {
             return OperatingSystem.MAC;
         }
 
-        if (isRaspberryPi())
-        {
+        if (isRaspberryPi()) {
             return OperatingSystem.RASPBERRY_PI;
         }
 
-        if (isLinux())
-        {
+        if (isLinux()) {
             return OperatingSystem.LINUX;
         }
 
         return OperatingSystem.UNDEFINED;
     }
 
-    public static boolean isWindows()
-    {
+    public static boolean isWindows() {
         return OPERATING_SYSTEM.indexOf("windows") >= 0;
     }
 
-    public static boolean isMac()
-    {
+    public static boolean isMac() {
         return OPERATING_SYSTEM.indexOf("mac") >= 0;
     }
 
-    public static boolean isLinux()
-    {
+    public static boolean isLinux() {
         return OPERATING_SYSTEM.indexOf("linux") >= 0;
     }
 
-    public static boolean isRaspberryPi()
-    {
-        if (isLinux())
-        {
-            try
-            {
+    public static boolean isRaspberryPi() {
+        if (isLinux()) {
+            try {
                 FileInputStream fileInputStream = new FileInputStream(new File("/etc/os-release"));
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
                 String line = null;
-                while ((line = bufferedReader.readLine()) != null)
-                {
-                    if (line.toLowerCase().contains("name") && line.toLowerCase().contains("raspbian"))
-                    {
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (line.toLowerCase().contains("name") && line.toLowerCase().contains("raspbian")) {
                         return true;
                     }
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -145,8 +125,7 @@ public class OSUtils
         return false;
     }
 
-    public enum OperatingSystem
-    {
+    public enum OperatingSystem {
         WINDOWS,
         MAC,
         LINUX,

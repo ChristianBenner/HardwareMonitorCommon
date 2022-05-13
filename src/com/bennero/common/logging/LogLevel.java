@@ -26,12 +26,11 @@ package com.bennero.common.logging;
 /**
  * Enum that defines the different logging levels/severities.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public enum LogLevel
-{
+public enum LogLevel {
     DEBUG,
     INFO,
     WARNING,

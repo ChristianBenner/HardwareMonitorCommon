@@ -30,13 +30,12 @@ import static com.bennero.common.networking.NetworkUtils.stringToMacAddress;
 /**
  * Holds connection information of a hardware monitor or editor node such as version and AddressInformation
  *
- * @see         AddressInformation
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @see AddressInformation
+ * @since 1.0
  */
-public class ConnectionInformation extends Event
-{
+public class ConnectionInformation extends Event {
     private final byte majorVersion;
     private final byte minorVersion;
     private final byte patchVersion;
@@ -47,13 +46,12 @@ public class ConnectionInformation extends Event
                                  final byte patchVersion,
                                  final String macAddressStr,
                                  final String ip4AddressStr,
-                                 final String hostname)
-    {
+                                 final String hostname) {
         super(hostname, null, null);
         this.majorVersion = majorVersion;
         this.minorVersion = minorVersion;
         this.patchVersion = patchVersion;
-        addressInformation = new AddressInformation(stringToMacAddress(macAddressStr),stringToMacAddress(macAddressStr),
+        addressInformation = new AddressInformation(stringToMacAddress(macAddressStr), stringToMacAddress(macAddressStr),
                 hostname);
     }
 
@@ -62,8 +60,7 @@ public class ConnectionInformation extends Event
                                  final byte patchVersion,
                                  final byte[] macAddress,
                                  final byte[] ip4Address,
-                                 final String hostname)
-    {
+                                 final String hostname) {
         super(hostname, null, null);
         this.majorVersion = majorVersion;
         this.minorVersion = minorVersion;
@@ -71,39 +68,32 @@ public class ConnectionInformation extends Event
         addressInformation = new AddressInformation(macAddress, ip4Address, hostname);
     }
 
-    public byte getMajorVersion()
-    {
+    public byte getMajorVersion() {
         return majorVersion;
     }
 
-    public byte getMinorVersion()
-    {
+    public byte getMinorVersion() {
         return minorVersion;
     }
 
-    public byte getPatchVersion()
-    {
+    public byte getPatchVersion() {
         return patchVersion;
     }
 
-    public final byte[] getMacAddress()
-    {
+    public final byte[] getMacAddress() {
         return addressInformation.getMacAddress();
     }
 
-    public final byte[] getIp4Address()
-    {
+    public final byte[] getIp4Address() {
         return addressInformation.getIp4Address();
     }
 
-    public final String getHostname()
-    {
+    public final String getHostname() {
         return addressInformation.getHostname();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getHostname() + " (v" + majorVersion + "." + minorVersion + "." + patchVersion + ")";
     }
 }

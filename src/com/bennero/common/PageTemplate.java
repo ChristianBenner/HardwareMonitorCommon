@@ -30,12 +30,11 @@ import java.util.List;
 /**
  * Defines the required methods for a GUI component to present user configured page information.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public interface PageTemplate
-{
+public interface PageTemplate {
     int getUniqueId();
 
     void setUniqueId(int id);

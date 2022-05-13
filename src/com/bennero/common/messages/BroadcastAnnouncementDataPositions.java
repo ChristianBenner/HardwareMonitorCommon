@@ -26,12 +26,11 @@ package com.bennero.common.messages;
 /**
  * Defines a broadcast announcement messages data structure (position of each value within the message data)
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class BroadcastAnnouncementDataPositions
-{
+public class BroadcastAnnouncementDataPositions {
     public final static int HW_SYSTEM_IDENTIFIER_POS = 1;   // long (8 bytes)
     public final static int IP4_ADDRESS_POS = 9;           // 4 bytes
 }

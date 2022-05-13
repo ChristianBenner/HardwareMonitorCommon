@@ -27,67 +27,56 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DiscoveredNetworkList extends ArrayList<DiscoveredNetwork>
-{
+public class DiscoveredNetworkList extends ArrayList<DiscoveredNetwork> {
     private boolean errorOccurred;
     private int errorCode;
     private String errorMessage;
 
-    public DiscoveredNetworkList()
-    {
+    public DiscoveredNetworkList() {
         errorOccurred = false;
         errorCode = 0;
         errorMessage = null;
     }
 
-    public void setError(final String errorMessage, final int errorCode)
-    {
+    public void setError(final String errorMessage, final int errorCode) {
         this.errorCode = errorCode;
         this.errorOccurred = true;
         this.errorMessage = errorMessage;
     }
 
-    public boolean hasErrorOccurred()
-    {
+    public boolean hasErrorOccurred() {
         return errorOccurred;
     }
 
-    public int getErrorCode()
-    {
+    public int getErrorCode() {
         return errorCode;
     }
 
-    public String getErrorMessage()
-    {
+    public String getErrorMessage() {
         return errorMessage;
     }
 
-    public Set<String> getDeviceList()
-    {
+    public Set<String> getDeviceList() {
         Set<String> networkDeviceList = new HashSet<>();
 
-        for(int i = 0; i < super.size(); i++)
-        {
+        for (int i = 0; i < super.size(); i++) {
             networkDeviceList.add(super.get(i).getNetworkDevice());
         }
 
         return networkDeviceList;
     }
 
-    public ArrayList<String> getNetworkList()
-    {
+    public ArrayList<String> getNetworkList() {
         ArrayList<String> networkSsidList = new ArrayList<>();
 
-        for(int i = 0; i < super.size(); i++)
-        {
+        for (int i = 0; i < super.size(); i++) {
             networkSsidList.add(super.get(i).getNetworkSsid());
         }
 
         return networkSsidList;
     }
 
-    public int getNumberOfDevices()
-    {
+    public int getNumberOfDevices() {
         return getDeviceList().size();
     }
 }

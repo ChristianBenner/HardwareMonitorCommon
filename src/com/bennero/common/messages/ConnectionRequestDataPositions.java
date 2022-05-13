@@ -26,12 +26,11 @@ package com.bennero.common.messages;
 /**
  * Defines a connection request messages data structure (position of each value within the message data)
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class ConnectionRequestDataPositions
-{
+public class ConnectionRequestDataPositions {
     public final static int MAJOR_VERSION_POS = 1;          // 1 byte
     public final static int MINOR_VERSION_POS = 2;         // 1 byte
     public final static int PATCH_VERSION_POS = 3;         // 1 byte

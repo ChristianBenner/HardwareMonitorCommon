@@ -26,12 +26,11 @@ package com.bennero.common.messages;
 /**
  * Defines a sensor value messages data structure (position of each value within the message data)
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class SensorValueDataPositions
-{
+public class SensorValueDataPositions {
     public final static int ID_POS = 1;
     public final static int VALUE_POS = 2;
 }

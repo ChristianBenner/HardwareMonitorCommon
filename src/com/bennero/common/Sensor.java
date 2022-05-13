@@ -25,7 +25,6 @@ package com.bennero.common;
 
 import com.bennero.common.logging.LogLevel;
 import com.bennero.common.logging.Logger;
-import com.bennero.common.osspecific.OSNetworkUtils;
 import eu.hansolo.medusa.Gauge;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -35,8 +34,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
-public class Sensor extends BorderPane
-{
+public class Sensor extends BorderPane {
     // Class name used in logging
     public static final String CLASS_NAME = Sensor.class.getName();
 
@@ -84,8 +82,7 @@ public class Sensor extends BorderPane
                   final boolean averageEnabled,
                   final int averagingPeriod,
                   final int rowSpan,
-                  final int columnSpan)
-    {
+                  final int columnSpan) {
         this.uniqueId = id;
         this.row = row;
         this.column = column;
@@ -104,140 +101,111 @@ public class Sensor extends BorderPane
         initSensor(true);
     }
 
-    public float getValue()
-    {
+    public float getValue() {
         return value;
     }
 
-    public void setValue(float value)
-    {
-        if (valueChangeListener != null)
-        {
+    public void setValue(float value) {
+        if (valueChangeListener != null) {
             valueChangeListener.changed(null, null, value);
         }
-
         this.value = value;
 
-        if (value > max)
-        {
+        if (value > max) {
             setMax(value);
         }
 
-        if (gauge != null)
-        {
+        if (gauge != null) {
             gauge.setValue(value);
-        }
-        else
-        {
+        } else {
             Logger.log(LogLevel.ERROR, CLASS_NAME, "Sensor GUI is invalid so value could not be set");
         }
     }
 
-    public void setValueChangeListener(ChangeListener<Float> listener)
-    {
+    public void setValueChangeListener(ChangeListener<Float> listener) {
         this.valueChangeListener = listener;
     }
 
-    public byte getType()
-    {
+    public byte getType() {
         return type;
     }
 
-    public float getThreshold()
-    {
+    public float getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(float value)
-    {
+    public void setThreshold(float value) {
         // threshold must be >25% of max
         threshold = value;
 
-        if (threshold < max * 0.25f)
-        {
+        if (threshold < max * 0.25f) {
             threshold = max * 0.25f;
         }
 
-        if (this.gauge != null)
-        {
+        if (this.gauge != null) {
             this.gauge.setThreshold(threshold);
         }
     }
 
-    public void setPosition(int row, int column)
-    {
+    public void setPosition(int row, int column) {
         this.row = row;
         this.column = column;
     }
 
-    public int getRow()
-    {
+    public int getRow() {
         return row;
     }
 
-    public int getColumn()
-    {
+    public int getColumn() {
         return column;
     }
 
-    public String getOriginalName()
-    {
+    public String getOriginalName() {
         return originalName;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
         this.gauge.setTitle(title);
     }
 
-    public int getUniqueId()
-    {
+    public int getUniqueId() {
         return uniqueId;
     }
 
-    public String getHardwareType()
-    {
+    public String getHardwareType() {
         return hardwareType;
     }
 
-    public void setHardwareType(String hardwareType)
-    {
+    public void setHardwareType(String hardwareType) {
         this.hardwareType = hardwareType;
     }
 
-    public int getRowSpan()
-    {
+    public int getRowSpan() {
         return rowSpan;
     }
 
-    public void setRowSpan(int rowSpan)
-    {
+    public void setRowSpan(int rowSpan) {
         this.rowSpan = rowSpan;
     }
 
-    public int getColumnSpan()
-    {
+    public int getColumnSpan() {
         return columnSpan;
     }
 
-    public void setColumnSpan(int columnSpan)
-    {
+    public void setColumnSpan(int columnSpan) {
         this.columnSpan = columnSpan;
     }
 
-    public byte getSkin()
-    {
+    public byte getSkin() {
         return this.skin;
     }
 
-    public void setSkin(byte skin)
-    {
+    public void setSkin(byte skin) {
         this.skin = skin;
 
         initSensor(true);
@@ -247,90 +215,71 @@ public class Sensor extends BorderPane
         // this.gauge.reInit();
     }
 
-    public float getMax()
-    {
+    public float getMax() {
         return max;
     }
 
-    public void setMax(float max)
-    {
-        if (max < 1.0f)
-        {
+    public void setMax(float max) {
+        if (max < 1.0f) {
             this.max = 2.0f;
             this.threshold = 1.0f;
-        }
-        else
-        {
+        } else {
             this.max = max;
         }
 
-        if (type == SensorType.LOAD || type == SensorType.CONTROL || type == SensorType.LEVEL)
-        {
+        if (type == SensorType.LOAD || type == SensorType.CONTROL || type == SensorType.LEVEL) {
             this.max = 100.0f;
         }
 
         // Threshold cannot be less than 25% of max (at <20% some gauges have visual bugs)
-        if (threshold < max * 0.25f)
-        {
+        if (threshold < max * 0.25f) {
             threshold = max * 0.25f;
         }
 
-        if (gauge != null)
-        {
+        if (gauge != null) {
             gauge.setMaxValue(this.max);
             gauge.setThreshold(this.max * threshold);
         }
     }
 
-    private void _setAverageEnabled()
-    {
-        if (gauge != null && SkinHelper.checkSupport(skin, Skin.AVERAGE_COLOUR_SUPPORTED))
-        {
+    private void _setAverageEnabled() {
+        if (gauge != null && SkinHelper.checkSupport(skin, Skin.AVERAGE_COLOUR_SUPPORTED)) {
             gauge.setAveragingEnabled(averageEnabled);
             gauge.setAverageVisible(averageEnabled);
             _setAverageColour();
         }
     }
 
-    public boolean isAverageEnabled()
-    {
+    public boolean isAverageEnabled() {
         return this.averageEnabled;
     }
 
-    public void setAverageEnabled(boolean state)
-    {
+    public void setAverageEnabled(boolean state) {
         this.averageEnabled = state;
         _setAverageEnabled();
     }
 
-    private void _setAveragingPeriod()
-    {
-        if (gauge != null && averageEnabled && SkinHelper.checkSupport(skin, Skin.AVERAGE_COLOUR_SUPPORTED))
-        {
+    private void _setAveragingPeriod() {
+        if (gauge != null && averageEnabled && SkinHelper.checkSupport(skin, Skin.AVERAGE_COLOUR_SUPPORTED)) {
             gauge.setAveragingPeriod(averagingPeriod);
         }
     }
 
-    public int getAveragingPeriod()
-    {
+    public int getAveragingPeriod() {
         return averagingPeriod;
     }
 
-    public void setAveragingPeriod(int averagingPeriod)
-    {
+    public void setAveragingPeriod(int averagingPeriod) {
         this.averagingPeriod = averagingPeriod;
         _setAveragingPeriod();
     }
 
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.uniqueId = id;
     }
 
-    public void setOnGaugeClicked(EventHandler<MouseEvent> eventHandler)
-    {
-        if (this.gauge != null)
-        {
+    public void setOnGaugeClicked(EventHandler<MouseEvent> eventHandler) {
+        if (this.gauge != null) {
             this.gauge.setOnMouseClicked(eventHandler);
         }
     }
@@ -340,10 +289,8 @@ public class Sensor extends BorderPane
     // visually take effect. I think this is an issue with the gauge library because I could not find a way to fire the
     // event that makes a gauge redraw with its new values. For example, the modern gauge only lets you set bar colour
     // before it is visible on an actual pane
-    private void initSensor(boolean resetColours)
-    {
-        if (gauge != null)
-        {
+    private void initSensor(boolean resetColours) {
+        if (gauge != null) {
             super.getChildren().remove(gauge);
         }
 
@@ -359,19 +306,16 @@ public class Sensor extends BorderPane
         gauge.setMaxValue(max);
         gauge.setValue(value);
 
-        if (SkinHelper.checkSupport(skin, Skin.THRESHOLD_COLOUR_SUPPORTED))
-        {
+        if (SkinHelper.checkSupport(skin, Skin.THRESHOLD_COLOUR_SUPPORTED)) {
             gauge.setThreshold(threshold);
         }
 
-        if (gauge != null)
-        {
+        if (gauge != null) {
             BorderPane.setAlignment(gauge, Pos.CENTER);
             super.setCenter(gauge);
         }
 
-        if (resetColours)
-        {
+        if (resetColours) {
             averageColour = null;
             needleColour = null;
             valueColour = null;
@@ -401,358 +345,267 @@ public class Sensor extends BorderPane
         _setTickMarkColour();
     }
 
-    public Color getAverageColour()
-    {
+    public Color getAverageColour() {
         return averageColour;
     }
 
-    public void setAverageColour(Color averageColour)
-    {
+    public void setAverageColour(Color averageColour) {
         this.averageColour = averageColour;
         _setAverageColour();
     }
 
-    private void _setAverageColour()
-    {
-        if (averageEnabled && this.gauge != null && SkinHelper.checkSupport(skin, Skin.AVERAGE_COLOUR_SUPPORTED))
-        {
-            if (averageColour != null)
-            {
+    private void _setAverageColour() {
+        if (averageEnabled && this.gauge != null && SkinHelper.checkSupport(skin, Skin.AVERAGE_COLOUR_SUPPORTED)) {
+            if (averageColour != null) {
                 this.gauge.setAverageColor(averageColour);
-            }
-            else
-            {
+            } else {
                 averageColour = this.gauge.getAverageColor();
             }
         }
     }
 
-    public Color getNeedleColour()
-    {
+    public Color getNeedleColour() {
         return needleColour;
     }
 
-    public void setNeedleColour(Color needleColour)
-    {
+    public void setNeedleColour(Color needleColour) {
         this.needleColour = needleColour;
         _setNeedleColour(true);
     }
 
-    private void _setNeedleColour(boolean resetColours)
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.NEEDLE_COLOUR_SUPPORTED))
-        {
-            if (needleColour != null)
-            {
+    private void _setNeedleColour(boolean resetColours) {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.NEEDLE_COLOUR_SUPPORTED)) {
+            if (needleColour != null) {
                 this.gauge.setNeedleColor(needleColour);
 
                 // Forces the gauge to re-initialise with specific skins because for some reason they wont apply the
                 // colour changes unless it is completely re-initialised. I can't find a way to get the library to
                 // redraw/reset the skin so this is the current solution.
-                if (resetColours)
-                {
-                    switch (skin)
-                    {
+                if (resetColours) {
+                    switch (skin) {
                         case Skin.AMP:
                         case Skin.PLAIN_AMP:
                             initSensor(false);
                             break;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 needleColour = this.gauge.getNeedleColor();
             }
         }
     }
 
-    public Color getValueColour()
-    {
+    public Color getValueColour() {
         return valueColour;
     }
 
-    public void setValueColour(Color valueColour)
-    {
+    public void setValueColour(Color valueColour) {
         this.valueColour = valueColour;
         _setValueColour();
     }
 
-    private void _setValueColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.VALUE_COLOUR_SUPPORTED))
-        {
-            if (valueColour != null)
-            {
+    private void _setValueColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.VALUE_COLOUR_SUPPORTED)) {
+            if (valueColour != null) {
                 this.gauge.setValueColor(valueColour);
-            }
-            else
-            {
+            } else {
                 valueColour = this.gauge.getValueColor();
             }
         }
     }
 
-    public Color getUnitColour()
-    {
+    public Color getUnitColour() {
         return unitColour;
     }
 
-    public void setUnitColour(Color unitColour)
-    {
+    public void setUnitColour(Color unitColour) {
         this.unitColour = unitColour;
         _setUnitColour();
     }
 
-    private void _setUnitColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.UNIT_COLOUR_SUPPORTED))
-        {
-            if (unitColour != null)
-            {
+    private void _setUnitColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.UNIT_COLOUR_SUPPORTED)) {
+            if (unitColour != null) {
                 this.gauge.setUnitColor(unitColour);
-            }
-            else
-            {
+            } else {
                 unitColour = this.gauge.getUnitColor();
             }
         }
     }
 
-    public Color getKnobColour()
-    {
+    public Color getKnobColour() {
         return knobColour;
     }
 
-    public void setKnobColour(Color knobColour)
-    {
+    public void setKnobColour(Color knobColour) {
         this.knobColour = knobColour;
         _setKnobColour();
     }
 
-    private void _setKnobColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.KNOB_COLOUR_SUPPORTED))
-        {
-            if (knobColour != null)
-            {
+    private void _setKnobColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.KNOB_COLOUR_SUPPORTED)) {
+            if (knobColour != null) {
                 this.gauge.setKnobColor(knobColour);
-            }
-            else
-            {
+            } else {
                 knobColour = this.gauge.getKnobColor();
             }
         }
     }
 
-    public Color getBarColour()
-    {
+    public Color getBarColour() {
         return barColour;
     }
 
-    public void setBarColour(Color barColour)
-    {
+    public void setBarColour(Color barColour) {
         this.barColour = barColour;
         _setBarColour(true);
     }
 
-    private void _setBarColour(boolean resetColours)
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.BAR_COLOUR_SUPPORTED))
-        {
-            if (barColour != null)
-            {
+    private void _setBarColour(boolean resetColours) {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.BAR_COLOUR_SUPPORTED)) {
+            if (barColour != null) {
                 this.gauge.setBarColor(barColour);
 
                 // Forces the gauge to re-initialise with specific skins because for some reason they wont apply the
                 // colour changes unless it is completely re-initialised. I can't find a way to get the library to
                 // redraw/reset the skin so this is the current solution.
-                if (resetColours)
-                {
-                    switch (skin)
-                    {
+                if (resetColours) {
+                    switch (skin) {
                         case Skin.MODERN:
                             initSensor(false);
                             break;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 barColour = this.gauge.getBarColor();
             }
         }
     }
 
-    public Color getThresholdColour()
-    {
+    public Color getThresholdColour() {
         return thresholdColour;
     }
 
-    public void setThresholdColour(Color thresholdColour)
-    {
+    public void setThresholdColour(Color thresholdColour) {
         this.thresholdColour = thresholdColour;
         _setThresholdColour();
     }
 
-    private void _setThresholdColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.THRESHOLD_COLOUR_SUPPORTED))
-        {
-            if (thresholdColour != null)
-            {
+    private void _setThresholdColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.THRESHOLD_COLOUR_SUPPORTED)) {
+            if (thresholdColour != null) {
                 this.gauge.setThresholdColor(thresholdColour);
-            }
-            else
-            {
+            } else {
                 thresholdColour = this.gauge.getThresholdColor();
             }
         }
     }
 
-    public Color getTitleColour()
-    {
+    public Color getTitleColour() {
         return titleColour;
     }
 
-    public void setTitleColour(Color titleColour)
-    {
+    public void setTitleColour(Color titleColour) {
         this.titleColour = titleColour;
         _setTitleColour();
     }
 
-    private void _setTitleColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.TITLE_COLOUR_SUPPORTED))
-        {
-            if (titleColour != null)
-            {
+    private void _setTitleColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.TITLE_COLOUR_SUPPORTED)) {
+            if (titleColour != null) {
                 this.gauge.setTitleColor(titleColour);
-            }
-            else
-            {
+            } else {
                 titleColour = this.gauge.getTitleColor();
             }
         }
     }
 
-    public Color getBarBackgroundColour()
-    {
+    public Color getBarBackgroundColour() {
         return barBackgroundColour;
     }
 
-    public void setBarBackgroundColour(Color barBackgroundColour)
-    {
+    public void setBarBackgroundColour(Color barBackgroundColour) {
         this.barBackgroundColour = barBackgroundColour;
         _setBarBackgroundColour();
     }
 
-    private void _setBarBackgroundColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.BAR_BACKGROUND_COLOUR_SUPPORTED))
-        {
-            if (barBackgroundColour != null)
-            {
+    private void _setBarBackgroundColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.BAR_BACKGROUND_COLOUR_SUPPORTED)) {
+            if (barBackgroundColour != null) {
                 this.gauge.setBarBackgroundColor(barBackgroundColour);
-            }
-            else
-            {
+            } else {
                 barBackgroundColour = this.gauge.getBarBackgroundColor();
             }
         }
     }
 
-    public Color getForegroundColour()
-    {
+    public Color getForegroundColour() {
         return foregroundColour;
     }
 
-    public void setForegroundColour(Color foregroundColour)
-    {
+    public void setForegroundColour(Color foregroundColour) {
         this.foregroundColour = foregroundColour;
         _setForegroundColour();
     }
 
-    private void _setForegroundColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.FOREGROUND_BASE_COLOUR_SUPPORTED))
-        {
-            if (foregroundColour != null)
-            {
+    private void _setForegroundColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.FOREGROUND_BASE_COLOUR_SUPPORTED)) {
+            if (foregroundColour != null) {
                 this.gauge.setForegroundBaseColor(foregroundColour);
-            }
-            else
-            {
+            } else {
                 foregroundColour = this.gauge.getTitleColor();
             }
         }
     }
 
-    public Color getTickLabelColour()
-    {
+    public Color getTickLabelColour() {
         return tickLabelColour;
     }
 
-    public void setTickLabelColour(Color tickLabelColour)
-    {
+    public void setTickLabelColour(Color tickLabelColour) {
         this.tickLabelColour = tickLabelColour;
         _setTickLabelColour(true);
     }
 
-    private void _setTickLabelColour(boolean resetColours)
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.TICK_LABEL_COLOUR_SUPPORTED))
-        {
-            if (tickLabelColour != null)
-            {
+    private void _setTickLabelColour(boolean resetColours) {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.TICK_LABEL_COLOUR_SUPPORTED)) {
+            if (tickLabelColour != null) {
                 this.gauge.setTickLabelColor(tickLabelColour);
 
-                if (resetColours)
-                {
-                    switch (skin)
-                    {
+                if (resetColours) {
+                    switch (skin) {
                         case Skin.SIMPLE:
                             initSensor(false);
                             break;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 tickLabelColour = this.gauge.getTickLabelColor();
             }
         }
     }
 
-    public Color getTickMarkColour()
-    {
+    public Color getTickMarkColour() {
         return tickMarkColour;
     }
 
-    public void setTickMarkColour(Color tickMarkColour)
-    {
+    public void setTickMarkColour(Color tickMarkColour) {
         this.tickMarkColour = tickMarkColour;
         _setTickMarkColour();
     }
 
-    private void _setTickMarkColour()
-    {
-        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.TICK_MARK_COLOUR_SUPPORTED))
-        {
-            if (tickMarkColour != null)
-            {
+    private void _setTickMarkColour() {
+        if (this.gauge != null && SkinHelper.checkSupport(skin, Skin.TICK_MARK_COLOUR_SUPPORTED)) {
+            if (tickMarkColour != null) {
                 this.gauge.setTickMarkColor(tickMarkColour);
-            }
-            else
-            {
+            } else {
                 tickMarkColour = this.gauge.getTickMarkColor();
             }
         }
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return title;
     }
 }

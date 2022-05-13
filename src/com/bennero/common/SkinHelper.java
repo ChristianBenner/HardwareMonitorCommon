@@ -34,19 +34,17 @@ import static com.bennero.common.Skin.*;
  * Associates a Gauge skin enum value (defined in the medusa library) with its unique ID (defined in Skin class). The
  * SkinHelper also provides names for each skin, and flags that define each skins configurable properties.
  *
- * @see         Skin
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @see Skin
+ * @since 1.0
  */
-public class SkinHelper
-{
+public class SkinHelper {
     private static SkinHelper instance = null;
 
     private List<Skin> skins;
 
-    private SkinHelper()
-    {
+    private SkinHelper() {
         skins = new ArrayList<>();
 
         skins.add(new Skin(Skin.SPACE, "Space", Gauge.SkinType.SPACE_X, VALUE_COLOUR_SUPPORTED | UNIT_COLOUR_SUPPORTED | BAR_COLOUR_SUPPORTED | THRESHOLD_COLOUR_SUPPORTED | TITLE_COLOUR_SUPPORTED | FOREGROUND_BASE_COLOUR_SUPPORTED));
@@ -81,10 +79,8 @@ public class SkinHelper
         skins.add(new Skin(Skin.TILE_TEXT_KPI, "Tile Text KPI", Gauge.SkinType.TILE_TEXT_KPI, BAR_COLOUR_SUPPORTED | THRESHOLD_COLOUR_SUPPORTED | BAR_BACKGROUND_COLOUR_SUPPORTED | FOREGROUND_BASE_COLOUR_SUPPORTED));
     }
 
-    public static SkinHelper getInstance()
-    {
-        if (instance == null)
-        {
+    public static SkinHelper getInstance() {
+        if (instance == null) {
             // Init
             instance = new SkinHelper();
         }
@@ -92,17 +88,14 @@ public class SkinHelper
         return instance;
     }
 
-    public static boolean containsSkin(String skin)
-    {
+    public static boolean containsSkin(String skin) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
         // Search array
         boolean found = false;
 
-        for (int i = 0; i < skins.size() && !found; i++)
-        {
-            if (skins.get(i).getName() == skin)
-            {
+        for (int i = 0; i < skins.size() && !found; i++) {
+            if (skins.get(i).getName() == skin) {
                 found = true;
             }
         }
@@ -110,17 +103,14 @@ public class SkinHelper
         return found;
     }
 
-    public static boolean containsSkin(byte skin)
-    {
+    public static boolean containsSkin(byte skin) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
         // Search array
         boolean found = false;
 
-        for (int i = 0; i < skins.size() && !found; i++)
-        {
-            if (skins.get(i).getCode() == skin)
-            {
+        for (int i = 0; i < skins.size() && !found; i++) {
+            if (skins.get(i).getCode() == skin) {
                 found = true;
             }
         }
@@ -128,14 +118,11 @@ public class SkinHelper
         return found;
     }
 
-    public static byte getByteCode(String skin)
-    {
+    public static byte getByteCode(String skin) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
-            if (skins.get(i).getName() == skin)
-            {
+        for (int i = 0; i < skins.size(); i++) {
+            if (skins.get(i).getName() == skin) {
                 return skins.get(i).getCode();
             }
         }
@@ -143,14 +130,11 @@ public class SkinHelper
         return Skin.SPACE;
     }
 
-    public static String getString(byte skin)
-    {
+    public static String getString(byte skin) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
-            if (skins.get(i).getCode() == skin)
-            {
+        for (int i = 0; i < skins.size(); i++) {
+            if (skins.get(i).getCode() == skin) {
                 return skins.get(i).getName();
             }
         }
@@ -158,14 +142,11 @@ public class SkinHelper
         return new String();
     }
 
-    public static Gauge.SkinType getSkinType(final byte skin)
-    {
+    public static Gauge.SkinType getSkinType(final byte skin) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
-            if (skins.get(i).getCode() == skin)
-            {
+        for (int i = 0; i < skins.size(); i++) {
+            if (skins.get(i).getCode() == skin) {
                 return skins.get(i).getSkinType();
             }
         }
@@ -173,14 +154,11 @@ public class SkinHelper
         return Gauge.SkinType.SPACE_X;
     }
 
-    public static boolean checkSupport(final String skin, final int supportFlag)
-    {
+    public static boolean checkSupport(final String skin, final int supportFlag) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
-            if (skins.get(i).getName() == skin)
-            {
+        for (int i = 0; i < skins.size(); i++) {
+            if (skins.get(i).getName() == skin) {
                 return skins.get(i).checkSupport(supportFlag);
             }
         }
@@ -188,14 +166,11 @@ public class SkinHelper
         return false;
     }
 
-    public static boolean checkSupport(final byte skin, final int supportFlag)
-    {
+    public static boolean checkSupport(final byte skin, final int supportFlag) {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
-            if (skins.get(i).getCode() == skin)
-            {
+        for (int i = 0; i < skins.size(); i++) {
+            if (skins.get(i).getCode() == skin) {
                 return skins.get(i).checkSupport(supportFlag);
             }
         }
@@ -203,36 +178,31 @@ public class SkinHelper
         return false;
     }
 
-    public static List<String> getNames()
-    {
+    public static List<String> getNames() {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
         List<String> names = new ArrayList<>();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
+        for (int i = 0; i < skins.size(); i++) {
             names.add(skins.get(i).getName());
         }
 
         return names;
     }
 
-    public static List<Gauge.SkinType> getSkinTypes()
-    {
+    public static List<Gauge.SkinType> getSkinTypes() {
         List<Skin> skins = SkinHelper.getInstance().getSkins();
 
         List<Gauge.SkinType> skinsTypes = new ArrayList<>();
 
-        for (int i = 0; i < skins.size(); i++)
-        {
+        for (int i = 0; i < skins.size(); i++) {
             skinsTypes.add(skins.get(i).getSkinType());
         }
 
         return skinsTypes;
     }
 
-    private List<Skin> getSkins()
-    {
+    private List<Skin> getSkins() {
         return skins;
     }
 }

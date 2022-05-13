@@ -27,37 +27,32 @@ package com.bennero.common.networking;
  * Holds network address information such as MAC address, IP4 address and hostname. The class provides encapsulation for
  * commonly connection information.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class AddressInformation
-{
+public class AddressInformation {
     private final byte[] macAddress;
     private final byte[] ip4Address;
     private final String hostname;
 
     public AddressInformation(final byte[] macAddressStr,
                               final byte[] ip4AddressStr,
-                              final String hostname)
-    {
+                              final String hostname) {
         this.macAddress = macAddressStr;
         this.ip4Address = ip4AddressStr;
         this.hostname = hostname;
     }
 
-    public final byte[] getMacAddress()
-    {
+    public final byte[] getMacAddress() {
         return macAddress;
     }
 
-    public final byte[] getIp4Address()
-    {
+    public final byte[] getIp4Address() {
         return ip4Address;
     }
 
-    public final String getHostname()
-    {
+    public final String getHostname() {
         return hostname;
     }
 }

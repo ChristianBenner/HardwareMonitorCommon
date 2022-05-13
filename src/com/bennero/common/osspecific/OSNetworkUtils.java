@@ -25,7 +25,6 @@ package com.bennero.common.osspecific;
 
 import com.bennero.common.logging.LogLevel;
 import com.bennero.common.logging.Logger;
-import com.bennero.common.networking.ConnectionAttemptStatus;
 import com.bennero.common.networking.DiscoveredNetwork;
 import com.bennero.common.networking.DiscoveredNetworkList;
 
@@ -40,12 +39,11 @@ import java.util.ArrayList;
  * to support this feature on, requests need to be made to the operating system and the responses scanned. This poses a
  * threat of incompatibility with future operating systems.
  *
- * @author      Christian Benner
- * @version     %I%, %G%
- * @since       1.0
+ * @author Christian Benner
+ * @version %I%, %G%
+ * @since 1.0
  */
-public class OSNetworkUtils
-{
+public class OSNetworkUtils {
     public static final String CLASS_NAME = OSNetworkUtils.class.getName();
 
     private final static int EXIT_VALUE_SUCCESS = 0;
@@ -65,87 +63,69 @@ public class OSNetworkUtils
     private final static int ERROR_CODE_NO_DEVICES_FOUND = 1;
     private final static int ERROR_CODE_NO_NETWORKS_FOUND = 2;
 
-    public static DiscoveredNetworkList fetchNetworksWindows()
-    {
+    public static DiscoveredNetworkList fetchNetworksWindows() {
         // List of found SSIDs
         DiscoveredNetworkList foundWirelessNetworks = new DiscoveredNetworkList();
 
         Runtime runtime = Runtime.getRuntime();
 
-        try
-        {
+        try {
             Process process = runtime.exec(WINDOWS_FETCH_NETWORKS_CMD);
             final int EXIT_VAL = process.waitFor();
-            if (EXIT_VAL == EXIT_VALUE_SUCCESS)
-            {
+            if (EXIT_VAL == EXIT_VALUE_SUCCESS) {
                 Logger.log(LogLevel.DEBUG, CLASS_NAME, "Ran Windows command for fetching networks '" +
                         WINDOWS_FETCH_NETWORKS_CMD + "'");
                 BufferedReader inputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line = null;
-                while ((line = inputStream.readLine()) != null)
-                {
-                    if (line.contains(SSID_STRING) && !line.contains(WINDOWS_BSSID_STRING))
-                    {
+                while ((line = inputStream.readLine()) != null) {
+                    if (line.contains(SSID_STRING) && !line.contains(WINDOWS_BSSID_STRING)) {
                         String[] theSsid = line.split(WINDOWS_SSID_STRING_DELIMETER);
-                        for (int i = 1; i < theSsid.length; i++)
-                        {
+                        for (int i = 1; i < theSsid.length; i++) {
                             Logger.log(LogLevel.INFO, CLASS_NAME, "Discovered network " + theSsid[i]);
                             foundWirelessNetworks.add(new DiscoveredNetwork("default", theSsid[i]));
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 Logger.log(LogLevel.ERROR, CLASS_NAME, "Failed to fetch wireless networks. Command '" +
                         WINDOWS_FETCH_NETWORKS_CMD + "' returned non-zero exit value of " + EXIT_VAL);
             }
-        }
-        catch (IOException | InterruptedException exception)
-        {
+        } catch (IOException | InterruptedException exception) {
             exception.printStackTrace();
         }
 
         return foundWirelessNetworks;
     }
 
-    public static ArrayList<String> fetchWirelessDevicesLinux()
-    {
+    public static ArrayList<String> fetchWirelessDevicesLinux() {
         Logger.log(LogLevel.DEBUG, CLASS_NAME, "Fetching wireless device list");
 
         // List of found wireless devices
         ArrayList<String> foundWirelessDevices = new ArrayList<>();
         Runtime runtime = Runtime.getRuntime();
 
-        try
-        {
+        try {
             // Fetch the different wireless devices
             Process wirelessDevFetch = runtime.exec(LINUX_FETCH_WIRELESS_DEVICES);
             BufferedReader inputStream = new BufferedReader(new InputStreamReader(wirelessDevFetch.getInputStream()));
             String line = null;
 
-            while ((line = inputStream.readLine()) != null)
-            {
-                if (line.contains(INTERFACE_STRING))
-                {
+            while ((line = inputStream.readLine()) != null) {
+                if (line.contains(INTERFACE_STRING)) {
                     String[] interfaceLine = line.split(LINUX_INTERFACE_STRING_DELIMETER);
-                    if(interfaceLine.length >= 2 && interfaceLine[1] != null)
-                    {
+                    if (interfaceLine.length >= 2 && interfaceLine[1] != null) {
                         foundWirelessDevices.add(interfaceLine[1]);
                     }
                 }
             }
-        }
-        catch (IOException exception)
-        {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
 
         return foundWirelessDevices;
     }
 
-    public static DiscoveredNetworkList fetchNetworksLinux()
-    {
+    public static DiscoveredNetworkList fetchNetworksLinux() {
         Logger.log(LogLevel.INFO, CLASS_NAME, "Fetching available networks");
 
         boolean errorOccurred = false;
@@ -155,21 +135,16 @@ public class OSNetworkUtils
 
         // Get the list of wireless devices
         ArrayList<String> foundWirelessDevices = fetchWirelessDevicesLinux();
-        try
-        {
-            for(int x = 0; x < foundWirelessDevices.size(); x++)
-            {
+        try {
+            for (int x = 0; x < foundWirelessDevices.size(); x++) {
                 final String networkDevice = foundWirelessDevices.get(x);
                 String askPassLoc = System.getenv("SUDO_ASKPASS");
 
                 ProcessBuilder processBuilder;
-                if(askPassLoc == null || askPassLoc.isEmpty())
-                {
+                if (askPassLoc == null || askPassLoc.isEmpty()) {
                     // Requires sudo
                     processBuilder = new ProcessBuilder("sudo", "iw", "dev", networkDevice, "scan");
-                }
-                else
-                {
+                } else {
                     // Requires password asspass to be set for GUI password pop-up
                     // e.g. SUDO_ASKPASS=/usr/libexec/seahorse/ssh-askpass
                     processBuilder = new ProcessBuilder("sudo", "-A", "iw", "dev", networkDevice, "scan");
@@ -185,37 +160,30 @@ public class OSNetworkUtils
                 // Fetch and print out any errors that have occured
                 BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 String error;
-                while ((error = errorStream.readLine()) != null)
-                {
+                while ((error = errorStream.readLine()) != null) {
                     Logger.log(LogLevel.ERROR, CLASS_NAME, "Scan command output << " + error);
                 }
 
                 BufferedReader inputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line = null;
 
-                while ((line = inputStream.readLine()) != null)
-                {
-                    if (line.contains(SSID_STRING))
-                    {
+                while ((line = inputStream.readLine()) != null) {
+                    if (line.contains(SSID_STRING)) {
                         String[] theSsid = line.split(LINUX_SSID_STRING_DELIMETER);
-                        for (int i = 1; i < theSsid.length; i++)
-                        {
+                        for (int i = 1; i < theSsid.length; i++) {
                             final String networkSsid = theSsid[i];
                             final DiscoveredNetwork discoveredNetwork = new DiscoveredNetwork(networkDevice,
                                     networkSsid);
 
                             boolean found = false;
                             // Check if the network list already contains the network, if not add it
-                            for (int n = 0; n < foundWirelessNetworks.size() && !found; n++)
-                            {
-                                if (foundWirelessNetworks.get(n).compare(discoveredNetwork))
-                                {
+                            for (int n = 0; n < foundWirelessNetworks.size() && !found; n++) {
+                                if (foundWirelessNetworks.get(n).compare(discoveredNetwork)) {
                                     found = true;
                                 }
                             }
 
-                            if (!found)
-                            {
+                            if (!found) {
                                 Logger.log(LogLevel.INFO, CLASS_NAME, "Discovered network " +
                                         discoveredNetwork);
                                 foundWirelessNetworks.add(discoveredNetwork);
@@ -226,8 +194,7 @@ public class OSNetworkUtils
 
                 // Get the error code of the process execution
                 int executionStatus = process.waitFor();
-                switch (executionStatus)
-                {
+                switch (executionStatus) {
                     case IW_CODE_SUCCESS:
                         Logger.log(LogLevel.DEBUG, CLASS_NAME, "iw command ran successfully");
                         break;
@@ -252,21 +219,16 @@ public class OSNetworkUtils
                         break;
                 }
             }
-        }
-        catch (IOException | InterruptedException exception)
-        {
+        } catch (IOException | InterruptedException exception) {
             exception.printStackTrace();
         }
 
         // Raise an error if no wireless devices or networks have been found
-        if(!errorOccurred && foundWirelessDevices.isEmpty())
-        {
+        if (!errorOccurred && foundWirelessDevices.isEmpty()) {
             Logger.log(LogLevel.WARNING, CLASS_NAME, "Failed to find any wireless network devices");
             foundWirelessNetworks.setError("Failed to find any wireless network devices",
                     ERROR_CODE_NO_DEVICES_FOUND);
-        }
-        else if(!errorOccurred && foundWirelessNetworks.isEmpty())
-        {
+        } else if (!errorOccurred && foundWirelessNetworks.isEmpty()) {
             Logger.log(LogLevel.WARNING, CLASS_NAME, "Failed to find any wireless networks");
             foundWirelessNetworks.setError("Failed to find any wireless networks",
                     ERROR_CODE_NO_NETWORKS_FOUND);
