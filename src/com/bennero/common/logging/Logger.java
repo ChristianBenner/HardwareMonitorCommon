@@ -98,4 +98,20 @@ public class Logger {
             }
         }
     }
+
+    public static void logf(LogLevel logLevel, String tag, String format, Object... args) {
+        if (isLogLevelSupported(logLevel)) {
+            final String formatted = getLogLevelText(logLevel) + tag + ": " + String.format(format, args);
+
+            for (int i = 0; i < logEventHandlers.size(); i++) {
+                logEventHandlers.get(i).handle(new LogEvent(formatted, logLevel));
+            }
+
+            if (logLevel == LogLevel.ERROR) {
+                System.err.printf(formatted);
+            } else {
+                System.out.println(formatted);
+            }
+        }
+    }
 }

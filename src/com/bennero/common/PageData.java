@@ -37,13 +37,13 @@ import java.util.List;
  * @since 1.0
  */
 public class PageData implements PageTemplate {
-    private int id;
+    private byte id;
     private Color colour;
     private Color titleColour;
     private Color subtitleColour;
     private int rows;
     private int columns;
-    private int nextPageId;
+    private byte nextPageId;
 
     private int transitionType;
     private int transitionTime;
@@ -56,13 +56,13 @@ public class PageData implements PageTemplate {
     private int subtitleAlignment;
     private List<Sensor> sensorList;
 
-    public PageData(final int id,
+    public PageData(final byte id,
                     final Color colour,
                     final Color titleColour,
                     final Color subtitleColour,
                     final int rows,
                     final int columns,
-                    final int nextPageId,
+                    final byte nextPageId,
                     final int transitionType,
                     final int transitionTime,
                     final int durationMs,
@@ -93,12 +93,12 @@ public class PageData implements PageTemplate {
     }
 
     @Override
-    public int getUniqueId() {
+    public byte getUniqueId() {
         return id;
     }
 
     @Override
-    public void setUniqueId(int id) {
+    public void setUniqueId(byte id) {
         this.id = id;
     }
 
@@ -153,12 +153,12 @@ public class PageData implements PageTemplate {
     }
 
     @Override
-    public int getNextPageId() {
+    public byte getNextPageId() {
         return nextPageId;
     }
 
     @Override
-    public void setNextPageId(int nextPageId) {
+    public void setNextPageId(byte nextPageId) {
         this.nextPageId = nextPageId;
     }
 

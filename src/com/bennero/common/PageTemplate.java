@@ -35,9 +35,9 @@ import java.util.List;
  * @since 1.0
  */
 public interface PageTemplate {
-    int getUniqueId();
+    byte getUniqueId();
 
-    void setUniqueId(int id);
+    void setUniqueId(byte id);
 
     Color getColour();
 
@@ -59,9 +59,9 @@ public interface PageTemplate {
 
     void setColumns(int columns);
 
-    int getNextPageId();
+    byte getNextPageId();
 
-    void setNextPageId(int nextPageId);
+    void setNextPageId(byte nextPageId);
 
     int getTransitionType();
 

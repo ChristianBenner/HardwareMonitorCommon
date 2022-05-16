@@ -38,7 +38,7 @@ public class Sensor extends BorderPane {
     // Class name used in logging
     public static final String CLASS_NAME = Sensor.class.getName();
 
-    private int uniqueId;
+    private byte uniqueId;
     private int row;
     private int column;
     private byte type;
@@ -70,7 +70,7 @@ public class Sensor extends BorderPane {
 
     private ChangeListener<Float> valueChangeListener;
 
-    public Sensor(final int id,
+    public Sensor(final byte id,
                   final int row,
                   final int column,
                   final byte type,
@@ -173,7 +173,7 @@ public class Sensor extends BorderPane {
         this.gauge.setTitle(title);
     }
 
-    public int getUniqueId() {
+    public byte getUniqueId() {
         return uniqueId;
     }
 
@@ -274,7 +274,7 @@ public class Sensor extends BorderPane {
         _setAveragingPeriod();
     }
 
-    public void setId(int id) {
+    public void setId(byte id) {
         this.uniqueId = id;
     }
 
