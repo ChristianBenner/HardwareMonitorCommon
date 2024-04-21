@@ -34,9 +34,9 @@ module HardwareMonitorCommon
     exports com.bennero.common.networking;
     exports com.bennero.common.logging;
 
-    requires javafx.controls;
-    requires javafx.base;
-    requires javafx.graphics;
-    requires javafx.web;
+    requires transitive javafx.controls;
+    requires transitive javafx.base;
+    requires transitive javafx.graphics;
+    requires transitive javafx.web;
     requires eu.hansolo.medusa;
 }

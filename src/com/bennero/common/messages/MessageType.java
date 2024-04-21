@@ -44,4 +44,5 @@ public class MessageType {
     public static final byte CONNECTION_REQUEST_RESPONSE_MESSAGE = 0x0B;
     public static final byte DISCONNECT_MESSAGE = 0x0C;
     public static final byte SENSOR_TRANSFORMATION_MESSAGE = 0x0D;
+    public static final byte VERSION_PARITY_MESSAGE = 0x0E;
 }
