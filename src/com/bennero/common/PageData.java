@@ -54,6 +54,7 @@ public class PageData implements PageTemplate {
     private String subtitle;
     private boolean subtitleEnabled;
     private int subtitleAlignment;
+    private String backgroundImage;
     private List<Sensor> sensorList;
 
     public PageData(final byte id,
@@ -71,7 +72,8 @@ public class PageData implements PageTemplate {
                     final int titleAlignment,
                     final String subheading,
                     final boolean subheadingEnabled,
-                    final int subheadingAlignment) {
+                    final int subheadingAlignment,
+                    final String backgroundImage) {
         this.id = id;
         this.colour = colour;
         this.titleColour = titleColour;
@@ -88,6 +90,7 @@ public class PageData implements PageTemplate {
         this.subtitle = subheading;
         this.subtitleEnabled = subheadingEnabled;
         this.subtitleAlignment = subheadingAlignment;
+        this.backgroundImage = backgroundImage;
 
         this.sensorList = new ArrayList<>();
     }
@@ -265,6 +268,16 @@ public class PageData implements PageTemplate {
     @Override
     public void removeSensor(Sensor sensor) {
         sensorList.remove(sensor);
+    }
+
+    @Override
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    @Override
+    public void setBackgroundImage(String fileName) {
+        this.backgroundImage = fileName;
     }
 
     @Override

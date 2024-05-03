@@ -51,6 +51,7 @@ public class Constants {
     public final static int TEXT_ALIGNMENT_RIGHT = 2;
 
     public final static int NAME_STRING_NUM_BYTES = 64;
+    public final static int BACKGROUND_IMAGE_STRING_NUM_BYTES = 48;
     public final static int MAC_ADDRESS_NUM_BYTES = 6;
     public final static int IP4_ADDRESS_NUM_BYTES = 4;
 

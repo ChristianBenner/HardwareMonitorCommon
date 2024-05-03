@@ -99,6 +99,10 @@ public interface PageTemplate {
 
     void setSubtitleAlignment(int subtitleAlignment);
 
+    String getBackgroundImage();
+
+    void setBackgroundImage(String fileName);
+
     List<Sensor> getSensorList();
 
     void addSensor(Sensor sensor);

@@ -65,6 +65,10 @@ public class OSUtils {
         return appDataDirectory;
     }
 
+    public static String getBackgroundImageDirectory() {
+        return getApplicationDataDirectory() + File.separator + "background_images";
+    }
+
     public static String getOperatingSystemString() {
         if (isRaspberryPi()) {
             return RASPBERRY_PI_OS_STRING;

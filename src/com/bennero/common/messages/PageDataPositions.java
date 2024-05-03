@@ -53,4 +53,5 @@ public class PageDataPositions {
     public final static int SUBTITLE_POS = 89;
     public final static int SUBTITLE_POS_ENABLED_POS = 153;
     public final static int SUBTITLE_POS_ALIGNMENT_POS = 154;
+    public final static int BACKGROUND_IMAGE_POS = 155; // 48 bytes
 }
