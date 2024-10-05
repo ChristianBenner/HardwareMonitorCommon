@@ -1,5 +1,8 @@
 package com.bennero.common.messages;
 
+import java.nio.ByteBuffer;
+import java.util.UUID;
+
 public class MessageUtils {
     private final static int BYTES_PER_FLOAT = 4;
     private final static int BYTES_PER_INT = 4;
@@ -103,6 +106,15 @@ public class MessageUtils {
         for (int i = 0; i < len; i++) {
             dest[destOffset + i] = src[srcOffset + i];
         }
+    }
+
+    public static void writeToMessage(byte[] message, int index, UUID uuid) {
+        writeToMessage(message, index, uuid.getMostSignificantBits());
+        writeToMessage(message, index + Long.BYTES, uuid.getLeastSignificantBits());
+    }
+
+    public static UUID readUuid(byte[] bytes, int offset) {
+        return new UUID(readLong(bytes, offset), readLong(bytes, offset + Long.BYTES));
     }
 
     public static float readFloat(byte[] bytes, int offset) {
