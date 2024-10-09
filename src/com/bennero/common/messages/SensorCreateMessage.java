@@ -282,7 +282,7 @@ public class SensorCreateMessage extends Message {
         return column;
     }
 
-    public byte getType() {
+    public byte getSensorType() {
         return type;
     }
 

@@ -40,21 +40,21 @@ public class PageCreateMessage extends Message {
     private static int BACKGROUND_IMAGE_STR_NUM_BYTES = 48;
 
     private byte pageId;
-    private byte pageColourR;
-    private byte pageColourG;
-    private byte pageColourB;
+    private byte colourR;
+    private byte colourG;
+    private byte colourB;
     private byte titleColourR;
     private byte titleColourG;
     private byte titleColourB;
     private byte subtitleColourR;
     private byte subtitleColourG;
     private byte subtitleColourB;
-    private byte pageRows;
-    private byte pageColumns;
+    private byte rows;
+    private byte columns;
     private byte nextPageId;
-    private byte pageTransitionType;
-    private int pageTransitionTime;
-    private int pageDurationMs;
+    private byte transitionType;
+    private int transitionTime;
+    private int durationMs;
     private String title;
     private boolean titleEnabled;
     private byte titleAlignment;
@@ -63,29 +63,29 @@ public class PageCreateMessage extends Message {
     private byte subtitleAlignment;
     private String backgroundImage;
 
-    public PageCreateMessage(UUID senderUuid, boolean ok, byte pageId, byte pageColourR, byte pageColourG, byte pageColourB,
+    public PageCreateMessage(UUID senderUuid, boolean ok, byte pageId, byte colourR, byte colourG, byte colourB,
                              byte titleColourR, byte titleColourG, byte titleColourB, byte subtitleColourR,
-                             byte subtitleColourG, byte subtitleColourB, byte pageRows, byte pageColumns, byte nextPageId,
-                             byte pageTransitionType, int pageTransitionTime, int pageDurationMs, String title,
+                             byte subtitleColourG, byte subtitleColourB, byte rows, byte columns, byte nextPageId,
+                             byte transitionType, int transitionTime, int durationMs, String title,
                              boolean titleEnabled, byte titleAlignment, String subtitle, boolean subtitleEnabled,
                              byte subtitleAlignment, String backgroundImage) {
         super(senderUuid, ok, MessageType.PAGE_CREATE);
         this.pageId = pageId;
-        this.pageColourR = pageColourR;
-        this.pageColourG = pageColourG;
-        this.pageColourB = pageColourB;
+        this.colourR = colourR;
+        this.colourG = colourG;
+        this.colourB = colourB;
         this.titleColourR = titleColourR;
         this.titleColourG = titleColourG;
         this.titleColourB = titleColourB;
         this.subtitleColourR = subtitleColourR;
         this.subtitleColourG = subtitleColourG;
         this.subtitleColourB = subtitleColourB;
-        this.pageRows = pageRows;
-        this.pageColumns = pageColumns;
+        this.rows = rows;
+        this.columns = columns;
         this.nextPageId = nextPageId;
-        this.pageTransitionType = pageTransitionType;
-        this.pageTransitionTime = pageTransitionTime;
-        this.pageDurationMs = pageDurationMs;
+        this.transitionType = transitionType;
+        this.transitionTime = transitionTime;
+        this.durationMs = durationMs;
         this.title = title;
         this.titleEnabled = titleEnabled;
         this.titleAlignment = titleAlignment;
@@ -102,21 +102,21 @@ public class PageCreateMessage extends Message {
     @Override
     protected void readData() {
         pageId = readByte();
-        pageColourR = readByte();
-        pageColourG = readByte();
-        pageColourB = readByte();
+        colourR = readByte();
+        colourG = readByte();
+        colourB = readByte();
         titleColourR = readByte();
         titleColourG = readByte();
         titleColourB = readByte();
         subtitleColourR = readByte();
         subtitleColourG = readByte();
         subtitleColourB = readByte();
-        pageRows = readByte();
-        pageColumns = readByte();
+        rows = readByte();
+        columns = readByte();
         nextPageId = readByte();
-        pageTransitionType = readByte();
-        pageTransitionTime = readInt();
-        pageDurationMs = readInt();
+        transitionType = readByte();
+        transitionTime = readInt();
+        durationMs = readInt();
         title = readString(TITLE_STR_NUM_BYTES);
         titleEnabled = readBool();
         titleAlignment = readByte();
@@ -129,21 +129,21 @@ public class PageCreateMessage extends Message {
     @Override
     protected void writeData() {
         writeByte(pageId);
-        writeByte(pageColourR);
-        writeByte(pageColourG);
-        writeByte(pageColourB);
+        writeByte(colourR);
+        writeByte(colourG);
+        writeByte(colourB);
         writeByte(titleColourR);
         writeByte(titleColourG);
         writeByte(titleColourB);
         writeByte(subtitleColourR);
         writeByte(subtitleColourG);
         writeByte(subtitleColourB);
-        writeByte(pageRows);
-        writeByte(pageColumns);
+        writeByte(rows);
+        writeByte(columns);
         writeByte(nextPageId);
-        writeByte(pageTransitionType);
-        writeInt(pageTransitionTime);
-        writeInt(pageDurationMs);
+        writeByte(transitionType);
+        writeInt(transitionTime);
+        writeInt(durationMs);
         writeString(title, TITLE_STR_NUM_BYTES);
         writeBool(titleEnabled);
         writeByte(titleAlignment);
@@ -157,16 +157,16 @@ public class PageCreateMessage extends Message {
         return pageId;
     }
 
-    public byte getPageColourR() {
-        return pageColourR;
+    public byte getColourR() {
+        return colourR;
     }
 
-    public byte getPageColourG() {
-        return pageColourG;
+    public byte getColourG() {
+        return colourG;
     }
 
-    public byte getPageColourB() {
-        return pageColourB;
+    public byte getColourB() {
+        return colourB;
     }
 
     public byte getTitleColourR() {
@@ -193,28 +193,28 @@ public class PageCreateMessage extends Message {
         return subtitleColourB;
     }
 
-    public byte getPageRows() {
-        return pageRows;
+    public byte getRows() {
+        return rows;
     }
 
-    public byte getPageColumns() {
-        return pageColumns;
+    public byte getColumns() {
+        return columns;
     }
 
     public byte getNextPageId() {
         return nextPageId;
     }
 
-    public byte getPageTransitionType() {
-        return pageTransitionType;
+    public byte getTransitionType() {
+        return transitionType;
     }
 
-    public int getPageTransitionTime() {
-        return pageTransitionTime;
+    public int getTransitionTime() {
+        return transitionTime;
     }
 
-    public int getPageDurationMs() {
-        return pageDurationMs;
+    public int getDurationMs() {
+        return durationMs;
     }
 
     public String getTitle() {

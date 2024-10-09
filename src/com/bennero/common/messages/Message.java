@@ -67,12 +67,21 @@ public abstract class Message {
         }
     }
 
-    public byte getType() {
+    public final byte getType() {
         return type;
     }
 
     public static byte getType(byte[] bytes) {
         return bytes[TYPE_POS];
+    }
+
+    public static boolean isValid(byte[] bytes) {
+        long receivedChecksum = MessageUtils.readLong(bytes, CHECKSUM_POS);
+
+        // Create a checksum from all the data in the message
+        Checksum checksum = new CRC32();
+        checksum.update(bytes, 0, CHECKSUM_POS);
+        return checksum.getValue() == receivedChecksum;
     }
 
     private boolean verify() {
@@ -81,7 +90,7 @@ public abstract class Message {
 
         // Create a checksum from all the data in the message
         Checksum checksum = new CRC32();
-        checksum.update(bytes, 0, CHECKSUM_POS);
+        checksum.update(bytes, 0, CHECKSUM_POS + 1);
         return checksum.getValue() == receivedChecksum;
     }
 
@@ -100,7 +109,7 @@ public abstract class Message {
 
     private void writeChecksum() {
         Checksum checksum = new CRC32();
-        checksum.update(bytes, 0, CHECKSUM_POS);
+        checksum.update(bytes, 0, CHECKSUM_POS + 1);
 
         index = CHECKSUM_POS;
         writeLong(checksum.getValue());

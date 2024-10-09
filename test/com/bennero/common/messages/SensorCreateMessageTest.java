@@ -91,7 +91,7 @@ public class SensorCreateMessageTest {
 
         Assert.assertEquals(out.getRow(), in.getRow());
         Assert.assertEquals(out.getColumn(), in.getColumn());
-        Assert.assertEquals(out.getType(), in.getType());
+        Assert.assertEquals(out.getSensorType(), in.getSensorType());
         Assert.assertEquals(out.getSkin(), in.getSkin());
         Assert.assertEquals(out.getMax(), in.getMax(), 0.01f);
         Assert.assertEquals(out.getThreshold(), in.getThreshold(), 0.01f);
