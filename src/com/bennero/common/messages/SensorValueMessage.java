@@ -23,14 +23,50 @@
 
 package com.bennero.common.messages;
 
+import java.util.UUID;
+
 /**
- * Defines a sensor value messages data structure (position of each value within the message data)
+ * SensorValueMessage stores the data of a sensor update. It is not page dependent (any time the sensor with the given
+ * ID is updated it is updated across all pages). The message is sent by a connected client only and contains the new
+ * value for the sensor, and the ID of the sensor.
  *
  * @author Christian Benner
  * @version %I%, %G%
- * @since 1.0
+ * @since 1.1
  */
-public class SensorValueDataPositions {
-    public final static int ID_POS = 1;
-    public final static int VALUE_POS = 2;
+public class SensorValueMessage extends Message {
+    // todo: could this message have many sensor data in one with a terminator ID (255?)
+
+    private byte sensorId;
+    private float value;
+
+    public SensorValueMessage(UUID senderUuid, boolean ok, byte sensorId, float value) {
+        super(senderUuid, ok, MessageType.SENSOR_UPDATE);
+        this.sensorId = sensorId;
+        this.value = value;
+    }
+
+    public SensorValueMessage(byte[] bytes) {
+        super(bytes);
+    }
+
+    @Override
+    protected void readData() {
+        sensorId = readByte();
+        value = readFloat();
+    }
+
+    @Override
+    protected void writeData() {
+        writeByte(sensorId);
+        writeFloat(value);
+    }
+
+    public byte getSensorId() {
+        return sensorId;
+    }
+
+    public float getValue() {
+        return value;
+    }
 }

@@ -23,14 +23,47 @@
 
 package com.bennero.common.messages;
 
+import java.util.UUID;
+
 /**
- * Defines a broadcast announcement messages data structure (position of each value within the message data)
+ * SensorRemoveMessage stores the data of a sensor removal request. The message is sent by a connected client only. The
+ * message must include the page that the sensor is to be removed from.
  *
  * @author Christian Benner
  * @version %I%, %G%
- * @since 1.0
+ * @since 1.1
  */
-public class BroadcastAnnouncementDataPositions {
-    public final static int HW_SYSTEM_IDENTIFIER_POS = 1;   // long (8 bytes)
-    public final static int IP4_ADDRESS_POS = 9;           // 4 bytes
+public class SensorRemoveMessage extends Message {
+    private byte sensorId;
+    private byte pageId;
+
+    public SensorRemoveMessage(UUID senderUuid, boolean ok, byte sensorId, byte pageId) {
+        super(senderUuid, ok, MessageType.SENSOR_REMOVE);
+        this.sensorId = sensorId;
+        this.pageId = pageId;
+    }
+
+    public SensorRemoveMessage(byte[] bytes) {
+        super(bytes);
+    }
+
+    @Override
+    protected void readData() {
+        sensorId = readByte();
+        pageId = readByte();
+    }
+
+    @Override
+    protected void writeData() {
+        writeByte(sensorId);
+        writeByte(pageId);
+    }
+
+    public byte getSensorId() {
+        return sensorId;
+    }
+
+    public byte getPageId() {
+        return pageId;
+    }
 }

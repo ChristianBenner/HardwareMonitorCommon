@@ -33,6 +33,7 @@ module HardwareMonitorCommon
     exports com.bennero.common.osspecific;
     exports com.bennero.common.networking;
     exports com.bennero.common.logging;
+    exports com.bennero.common.messages.util;
 
     requires transitive javafx.controls;
     requires transitive javafx.base;

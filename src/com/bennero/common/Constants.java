@@ -36,11 +36,6 @@ public class Constants {
     public static final int EXIT_ERROR_CODE_NATIVE_SENSOR_UPDATE_FAILED = 1;
     public static final int EXIT_ERROR_CODE_NATIVE_GET_SENSOR_FAILED = 2;
 
-    public final static int MESSAGE_NUM_BYTES = 256;
-
-    // Message type is only one byte 0-255
-    public final static int MESSAGE_TYPE_POS = 0;
-
     public final static int PORT = 5392;
     public final static int BROADCAST_REPLY_PORT = 5393;
     public final static int BROADCAST_RECEIVE_PORT = 5393;

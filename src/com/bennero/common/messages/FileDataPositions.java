@@ -34,7 +34,7 @@ public class FileDataPositions {
     public final static byte TYPE_IMAGE = 0x01;
     public final static byte TYPE_SOFTWARE_UPDATE = 0x02;
 
-    public final static int SIZE_POS = 1;   // 4 bytes
-    public final static int TYPE_POS = 5;   // 1 byte
-    public final static int NAME_POS = 6;   // 48 bytes (36 for the UUID and 12 spare for extension)
+    public final static int SIZE_POS = 0;   // 4 bytes
+    public final static int TYPE_POS = 4;   // 1 byte
+    public final static int NAME_POS = 5;   // 48 bytes (36 for the UUID and 12 spare for extension)
 }

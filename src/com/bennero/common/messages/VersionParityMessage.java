@@ -23,14 +23,54 @@
 
 package com.bennero.common.messages;
 
+import java.util.UUID;
+
 /**
- * Defines a remove sensor data messages data structure (position of each value within the message data)
+ * todo
  *
  * @author Christian Benner
  * @version %I%, %G%
  * @since 1.0
  */
-public class RemoveSensorDataPositions {
-    public final static int SENSOR_ID_POS = 1;
-    public final static int PAGE_ID_POS = 2;
+public class VersionParityMessage extends Message {
+    private byte versionMajor;
+    private byte versionMinor;
+    private byte versionPatch;
+
+    public VersionParityMessage(UUID senderUuid, boolean ok, byte versionMajor, byte versionMinor, byte versionPatch) {
+        super(senderUuid, ok, MessageType.VERSION_PARITY);
+        this.versionMajor = versionMajor;
+        this.versionMinor = versionMinor;
+        this.versionPatch = versionPatch;
+    }
+
+    public VersionParityMessage(byte[] bytes) {
+        super(bytes);
+    }
+
+    @Override
+    protected void readData() {
+        versionMajor = readByte();
+        versionMinor = readByte();
+        versionPatch = readByte();
+    }
+
+    @Override
+    protected void writeData() {
+        writeByte(versionMajor);
+        writeByte(versionMinor);
+        writeByte(versionPatch);
+    }
+
+    public byte getVersionMajor() {
+        return versionMajor;
+    }
+
+    public byte getVersionMinor() {
+        return versionMinor;
+    }
+
+    public byte getVersionPatch() {
+        return versionPatch;
+    }
 }

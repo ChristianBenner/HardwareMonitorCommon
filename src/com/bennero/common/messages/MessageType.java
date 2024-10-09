@@ -32,19 +32,19 @@ package com.bennero.common.messages;
  * @since 1.0
  */
 public class MessageType {
-    public static final int DATA = 0x02;
-    public static final int PAGE_SETUP = 0x03;
-    public static final byte SENSOR_SETUP = 0x04;
-    public static final byte BROADCAST_MESSAGE = 0x05;
-    public static final byte BROADCAST_REPLY_MESSAGE = 0x06;
-    public static final byte REMOVE_PAGE = 0x07;
-    public static final byte REMOVE_SENSOR = 0x08;
-    public static final byte HEARTBEAT_MESSAGE = 0x09;
-    public static final byte CONNECTION_REQUEST_MESSAGE = 0x0A;
-    public static final byte CONNECTION_REQUEST_RESPONSE_MESSAGE = 0x0B;
-    public static final byte DISCONNECT_MESSAGE = 0x0C;
-    public static final byte SENSOR_TRANSFORMATION_MESSAGE = 0x0D;
-    public static final byte VERSION_PARITY_MESSAGE = 0x0E;
-    public static final byte VERSION_PARITY_RESPONSE_MESSAGE = 0x0F;
-    public static final byte FILE_MESSAGE = 0x10;
+    public static final byte SENSOR_UPDATE = 0x02;
+    public static final byte PAGE_CREATE = 0x03;
+    public static final byte SENSOR_CREATE = 0x04;
+    public static final byte BROADCAST = 0x05;
+    public static final byte BROADCAST_REPLY = 0x06;
+    public static final byte PAGE_REMOVE = 0x07;
+    public static final byte SENSOR_REMOVE = 0x08;
+    public static final byte HEARTBEAT = 0x09;
+    public static final byte CONNECTION_REQUEST = 0x0A;
+    public static final byte CONNECTION_REQUEST_RESPONSE = 0x0B;
+    public static final byte DISCONNECT = 0x0C;
+    public static final byte SENSOR_TRANSFORM = 0x0D;
+    public static final byte VERSION_PARITY = 0x0E;
+    public static final byte VERSION_PARITY_RESPONSE = 0x0F;
+    public static final byte FILE_TRANSFER = 0x10;
 }

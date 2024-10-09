@@ -23,18 +23,63 @@
 
 package com.bennero.common.messages;
 
+import java.util.UUID;
+
 /**
- * Defines a connection request messages data structure (position of each value within the message data)
+ * todo
  *
  * @author Christian Benner
  * @version %I%, %G%
  * @since 1.0
  */
-public class ConnectionRequestDataPositions {
-    public final static int MAJOR_VERSION_POS = 1;          // 1 byte
-    public final static int MINOR_VERSION_POS = 2;         // 1 byte
-    public final static int PATCH_VERSION_POS = 3;         // 1 byte
-    public final static int FORCE_CONNECT = 4;              // 1 byte - force the current client to be disconnected
-    public final static int IP4_ADDRESS_POS = 5;           // 4 bytes
-    public final static int HOSTNAME_POS = 9;               // 64 bytes - The server can use to tell future clients who is using the device
+public class VersionParityResponseMessage extends Message {
+    private byte versionMajor;
+    private byte versionMinor;
+    private byte versionPatch;
+    private boolean accepted;
+
+    public VersionParityResponseMessage(UUID senderUuid, boolean ok, byte versionMajor, byte versionMinor,
+                                        byte versionPatch, boolean accepted) {
+        super(senderUuid, ok, MessageType.VERSION_PARITY_RESPONSE);
+        this.versionMajor = versionMajor;
+        this.versionMinor = versionMinor;
+        this.versionPatch = versionPatch;
+        this.accepted = accepted;
+    }
+
+    public VersionParityResponseMessage(byte[] bytes) {
+        super(bytes);
+    }
+
+    @Override
+    protected void readData() {
+        versionMajor = readByte();
+        versionMinor = readByte();
+        versionPatch = readByte();
+        accepted = readBool();
+    }
+
+    @Override
+    protected void writeData() {
+        writeByte(versionMajor);
+        writeByte(versionMinor);
+        writeByte(versionPatch);
+        writeBool(accepted);
+    }
+
+    public byte getVersionMajor() {
+        return versionMajor;
+    }
+
+    public byte getVersionMinor() {
+        return versionMinor;
+    }
+
+    public byte getVersionPatch() {
+        return versionPatch;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
 }

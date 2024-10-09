@@ -23,18 +23,52 @@
 
 package com.bennero.common.messages;
 
+import java.util.UUID;
+
 /**
- * Defines a sensor transformation messages data structure (position of each value within the message data)
+ * BroadcastAnnouncementMessage stores data from a received broadcast message such as the IP4 address that it came from.
+ * A broadcast message should be sent out by a client that is looking for Hardware Monitor servers to connect to. It
+ * contains the IP4 address of the broadcasting device so that the server can send a response back to it (approving or
+ * denying). A BroadcastAnnouncementMessage is to be sent on a broadcast address so that all Hardware Monitor servers
+ * can see it.
  *
  * @author Christian Benner
  * @version %I%, %G%
- * @since 1.0
+ * @since 1.1
  */
-public class SensorTransformationPositions {
-    public final static int ID_POS = 1;
-    public final static int PAGE_ID_POS = 2;
-    public final static int ROW_POS = 3;
-    public final static int COLUMN_POS = 4;
-    public final static int ROW_SPAN_POS = 5;
-    public final static int COLUMN_SPAN_POS = 6;
+public class BroadcastAnnouncementMessage extends Message {
+    private final static int IP4_ADDRESS_NUM_BYTES = 4;
+
+    private long systemIdentifier;
+    private byte[] ip4Address;
+
+    public BroadcastAnnouncementMessage(UUID senderUuid, boolean ok, long systemIdentifier, byte[] ip4Address) {
+        super(senderUuid, ok, MessageType.BROADCAST);
+        this.systemIdentifier = systemIdentifier;
+        this.ip4Address = ip4Address;
+    }
+
+    public BroadcastAnnouncementMessage(byte[] bytes) {
+        super(bytes);
+    }
+
+    @Override
+    protected void readData() {
+        systemIdentifier = readLong();
+        ip4Address = readBytes(IP4_ADDRESS_NUM_BYTES);
+    }
+
+    @Override
+    protected void writeData() {
+        writeLong(systemIdentifier);
+        writeBytes(ip4Address, IP4_ADDRESS_NUM_BYTES);
+    }
+
+    public long getSystemIdentifier() {
+        return systemIdentifier;
+    }
+
+    public byte[] getIp4Address() {
+        return ip4Address;
+    }
 }

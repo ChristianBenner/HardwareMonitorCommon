@@ -1,14 +1,9 @@
 package com.bennero.common.messages;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
 
 public class MessageUtils {
-    private final static int BYTES_PER_FLOAT = 4;
-    private final static int BYTES_PER_INT = 4;
-    private final static int BYTES_PER_LONG = 8;
-
-    private static byte[] floatToByteArray(float val) {
+    public static byte[] floatToByteArray(float val) {
         int bits = Float.floatToIntBits(val);
         return new byte[]
                 {
@@ -27,7 +22,7 @@ public class MessageUtils {
         return Float.intBitsToFloat(bits);
     }
 
-    private static byte[] intToByteArray(int val) {
+    public static byte[] intToByteArray(int val) {
         return new byte[]
                 {
                         (byte) (val >> 24),
@@ -44,7 +39,7 @@ public class MessageUtils {
                 (bytes[3] & 0xFF);
     }
 
-    private static byte[] longToByteArray(long val) {
+    public static byte[] longToByteArray(long val) {
         return new byte[]
                 {
                         (byte) (val >> 56),
@@ -68,21 +63,21 @@ public class MessageUtils {
 
     public static void writeToMessage(byte[] message, int index, float val) {
         byte[] floatByteArray = floatToByteArray(val);
-        for (int i = 0; i < floatByteArray.length && i < BYTES_PER_FLOAT; i++) {
+        for (int i = 0; i < floatByteArray.length && i < Float.BYTES; i++) {
             message[index + i] = floatByteArray[i];
         }
     }
 
     public static void writeToMessage(byte[] message, int index, int val) {
         byte[] intToByteArray = intToByteArray(val);
-        for (int i = 0; i < intToByteArray.length && i < BYTES_PER_INT; i++) {
+        for (int i = 0; i < intToByteArray.length && i < Integer.BYTES; i++) {
             message[index + i] = intToByteArray[i];
         }
     }
 
     public static void writeToMessage(byte[] message, int index, long val) {
         byte[] longToByteArray = longToByteArray(val);
-        for (int i = 0; i < longToByteArray.length && i < BYTES_PER_LONG; i++) {
+        for (int i = 0; i < longToByteArray.length && i < Long.BYTES; i++) {
             message[index + i] = longToByteArray[i];
         }
     }
@@ -118,20 +113,20 @@ public class MessageUtils {
     }
 
     public static float readFloat(byte[] bytes, int offset) {
-        byte[] floatBytes = new byte[BYTES_PER_FLOAT];
-        putBytes(floatBytes, 0, bytes, offset, BYTES_PER_FLOAT);
+        byte[] floatBytes = new byte[Float.BYTES];
+        putBytes(floatBytes, 0, bytes, offset, Float.BYTES);
         return byteArrayToFloat(floatBytes);
     }
 
     public static int readInt(byte[] bytes, int offset) {
-        byte[] intBytes = new byte[BYTES_PER_INT];
-        putBytes(intBytes, 0, bytes, offset, BYTES_PER_INT);
+        byte[] intBytes = new byte[Integer.BYTES];
+        putBytes(intBytes, 0, bytes, offset, Integer.BYTES);
         return byteArrayToInt(intBytes);
     }
 
     public static long readLong(byte[] bytes, int offset) {
-        byte[] longBytes = new byte[BYTES_PER_LONG];
-        putBytes(longBytes, 0, bytes, offset, BYTES_PER_LONG);
+        byte[] longBytes = new byte[Long.BYTES];
+        putBytes(longBytes, 0, bytes, offset, Long.BYTES);
         return byteArrayToLong(longBytes);
     }
 
