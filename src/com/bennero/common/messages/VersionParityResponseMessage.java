@@ -33,18 +33,22 @@ import java.util.UUID;
  * @since 1.0
  */
 public class VersionParityResponseMessage extends Message {
+    private static final int REJECTION_REASON_STR_NUM_BYTES = 96;
+
     private byte versionMajor;
     private byte versionMinor;
     private byte versionPatch;
     private boolean accepted;
+    private String rejectionReason;
 
     public VersionParityResponseMessage(UUID senderUuid, boolean ok, byte versionMajor, byte versionMinor,
-                                        byte versionPatch, boolean accepted) {
+                                        byte versionPatch, boolean accepted, String rejectionReason) {
         super(senderUuid, ok, MessageType.VERSION_PARITY_RESPONSE);
         this.versionMajor = versionMajor;
         this.versionMinor = versionMinor;
         this.versionPatch = versionPatch;
         this.accepted = accepted;
+        this.rejectionReason = rejectionReason;
     }
 
     public VersionParityResponseMessage(byte[] bytes) {
@@ -57,6 +61,7 @@ public class VersionParityResponseMessage extends Message {
         versionMinor = readByte();
         versionPatch = readByte();
         accepted = readBool();
+        rejectionReason = readString(REJECTION_REASON_STR_NUM_BYTES);
     }
 
     @Override
@@ -65,6 +70,7 @@ public class VersionParityResponseMessage extends Message {
         writeByte(versionMinor);
         writeByte(versionPatch);
         writeBool(accepted);
+        writeString(rejectionReason, REJECTION_REASON_STR_NUM_BYTES);
     }
 
     public byte getVersionMajor() {
@@ -81,5 +87,9 @@ public class VersionParityResponseMessage extends Message {
 
     public boolean isAccepted() {
         return accepted;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
     }
 }

@@ -16,9 +16,10 @@ public class VersionParityResponseMessageTest {
         byte versionMinor = (byte)random.nextInt();
         byte versionPatch = (byte)random.nextInt();
         boolean accepted = random.nextBoolean();
+        String rejectionReason = "test";
 
         VersionParityResponseMessage out = new VersionParityResponseMessage(uuid, ok, versionMajor, versionMinor,
-                versionPatch, accepted);
+                versionPatch, accepted, rejectionReason);
 
         return out;
     }
@@ -38,6 +39,7 @@ public class VersionParityResponseMessageTest {
         Assert.assertEquals(out.getVersionMinor(), in.getVersionMinor());
         Assert.assertEquals(out.getVersionPatch(), in.getVersionPatch());
         Assert.assertEquals(out.isAccepted(), in.isAccepted());
+        Assert.assertEquals(out.getRejectionReason(), in.getRejectionReason());
     }
 
     @Test

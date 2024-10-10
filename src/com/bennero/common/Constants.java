@@ -45,16 +45,11 @@ public class Constants {
     public final static int TEXT_ALIGNMENT_CENTER = 1;
     public final static int TEXT_ALIGNMENT_RIGHT = 2;
 
-    public final static int NAME_STRING_NUM_BYTES = 64;
-    public final static int BACKGROUND_IMAGE_STRING_NUM_BYTES = 48;
     public final static int MAC_ADDRESS_NUM_BYTES = 6;
     public final static int IP4_ADDRESS_NUM_BYTES = 4;
 
     public final static long HW_EDITOR_SYSTEM_UNIQUE_CONNECTION_ID = 2068354079750733463L;
     public final static long HW_MONITOR_SYSTEM_UNIQUE_CONNECTION_ID = 7229626662156094589L;
-
-    public final static int HW_HEARTBEAT_VALIDATION_NUMBER_POS = 1;
-    public final static long HW_HEARTBEAT_VALIDATION_NUMBER = 2703806547261752716L;
 
     public final static int HEARTBEAT_TIMEOUT_MS = 10000;
     public final static int HEARTBEAT_FREQUENCY_MS = 1000;

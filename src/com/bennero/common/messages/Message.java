@@ -71,8 +71,16 @@ public abstract class Message {
         return type;
     }
 
+    public final String getTypeString() {
+        return MessageType.asString(type);
+    }
+
     public static byte getType(byte[] bytes) {
         return bytes[TYPE_POS];
+    }
+
+    public static String getTypeString(byte[] bytes) {
+        return MessageType.asString(getType(bytes));
     }
 
     public static boolean isValid(byte[] bytes) {
@@ -80,7 +88,7 @@ public abstract class Message {
 
         // Create a checksum from all the data in the message
         Checksum checksum = new CRC32();
-        checksum.update(bytes, 0, CHECKSUM_POS);
+        checksum.update(bytes, 0, CHECKSUM_POS + 1);
         return checksum.getValue() == receivedChecksum;
     }
 

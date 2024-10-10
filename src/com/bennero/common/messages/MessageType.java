@@ -23,6 +23,9 @@
 
 package com.bennero.common.messages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Constants for different types of messages. Each message has a unique ID represented as a byte for efficient usage in
  * networking or other message protocols.
@@ -47,4 +50,25 @@ public class MessageType {
     public static final byte VERSION_PARITY = 0x0E;
     public static final byte VERSION_PARITY_RESPONSE = 0x0F;
     public static final byte FILE_TRANSFER = 0x10;
+
+    public static String asString(byte type) {
+        switch (type) {
+            case SENSOR_UPDATE: return "SENSOR_UPDATE";
+            case PAGE_CREATE: return "PAGE_CREATE";
+            case SENSOR_CREATE: return "SENSOR_CREATE";
+            case BROADCAST: return "BROADCAST";
+            case BROADCAST_REPLY: return "BROADCAST_REPLY";
+            case PAGE_REMOVE: return "PAGE_REMOVE";
+            case SENSOR_REMOVE: return "SENSOR_REMOVE";
+            case HEARTBEAT: return "HEARTBEAT";
+            case CONNECTION_REQUEST: return "CONNECTION_REQUEST";
+            case CONNECTION_REQUEST_RESPONSE: return "CONNECTION_REQUEST_RESPONSE";
+            case DISCONNECT: return "DISCONNECT";
+            case SENSOR_TRANSFORM: return "SENSOR_TRANSFORM";
+            case VERSION_PARITY: return "VERSION_PARITY";
+            case VERSION_PARITY_RESPONSE: return "VERSION_PARITY_RESPONSE";
+            case FILE_TRANSFER: return "FILE_TRANSFER";
+            default: return "UNDEFINED";
+        }
+    }
 }
