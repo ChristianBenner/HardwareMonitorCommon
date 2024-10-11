@@ -23,6 +23,7 @@
 
 package com.bennero.common.messages;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,39 +35,41 @@ import java.util.UUID;
  * @version %I%, %G%
  * @since 1.1
  */
-public class SensorValueMessage extends Message {
+public class SensorUpdateMessage extends Message {
     // todo: could this message have many sensor data in one with a terminator ID (255?)
 
-    private byte sensorId;
-    private float value;
+    private SensorUpdateInfo[] sensorUpdates;
 
-    public SensorValueMessage(UUID senderUuid, boolean ok, byte sensorId, float value) {
+    public SensorUpdateMessage(UUID senderUuid, boolean ok, SensorUpdateInfo[] sensorUpdates) {
         super(senderUuid, ok, MessageType.SENSOR_UPDATE);
-        this.sensorId = sensorId;
-        this.value = value;
+        this.sensorUpdates = sensorUpdates;
     }
 
-    public SensorValueMessage(byte[] bytes) {
+    public SensorUpdateMessage(byte[] bytes) {
         super(bytes);
     }
 
     @Override
     protected void readData() {
-        sensorId = readByte();
-        value = readFloat();
+        byte numSensors = readByte();
+        sensorUpdates = new SensorUpdateInfo[numSensors];
+        for (int i = 0; i < numSensors; i++) {
+            sensorUpdates[i] = new SensorUpdateInfo(readByte(), readFloat());
+        }
     }
 
     @Override
     protected void writeData() {
-        writeByte(sensorId);
-        writeFloat(value);
+        byte numSensors = (byte)sensorUpdates.length;
+        writeByte(numSensors);
+
+        for (int i = 0; i < numSensors; i++) {
+            writeByte(sensorUpdates[i].getSensorId());
+            writeFloat(sensorUpdates[i].getValue());
+        }
     }
 
-    public byte getSensorId() {
-        return sensorId;
-    }
-
-    public float getValue() {
-        return value;
+    public SensorUpdateInfo[] getSensorUpdates() {
+        return sensorUpdates;
     }
 }

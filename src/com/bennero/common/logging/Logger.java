@@ -108,7 +108,7 @@ public class Logger {
             }
 
             if (logLevel == LogLevel.ERROR) {
-                System.err.printf(formatted);
+                System.err.println(formatted);
             } else {
                 System.out.println(formatted);
             }

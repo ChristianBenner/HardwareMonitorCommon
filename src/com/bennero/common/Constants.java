@@ -52,5 +52,5 @@ public class Constants {
     public final static long HW_MONITOR_SYSTEM_UNIQUE_CONNECTION_ID = 7229626662156094589L;
 
     public final static int HEARTBEAT_TIMEOUT_MS = 10000;
-    public final static int HEARTBEAT_FREQUENCY_MS = 1000;
+    public final static int HEARTBEAT_FREQUENCY_MS = 4000;
 }

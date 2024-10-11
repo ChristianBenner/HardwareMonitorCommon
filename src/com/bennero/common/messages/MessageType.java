@@ -50,6 +50,7 @@ public class MessageType {
     public static final byte VERSION_PARITY = 0x0E;
     public static final byte VERSION_PARITY_RESPONSE = 0x0F;
     public static final byte FILE_TRANSFER = 0x10;
+    public static final byte CONFIRMATION = 0x11;
 
     public static String asString(byte type) {
         switch (type) {
@@ -68,6 +69,7 @@ public class MessageType {
             case VERSION_PARITY: return "VERSION_PARITY";
             case VERSION_PARITY_RESPONSE: return "VERSION_PARITY_RESPONSE";
             case FILE_TRANSFER: return "FILE_TRANSFER";
+            case CONFIRMATION: return "CONFIRMATION";
             default: return "UNDEFINED";
         }
     }

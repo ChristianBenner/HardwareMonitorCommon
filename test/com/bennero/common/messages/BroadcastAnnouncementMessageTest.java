@@ -17,6 +17,7 @@ public class BroadcastAnnouncementMessageTest {
         BroadcastAnnouncementMessage message = new BroadcastAnnouncementMessage(uuid, ok, systemIdentifier, ipv4);
         byte[] bytes = message.write();
 
+        Assert.assertTrue(Message.isValid(bytes));
         Assert.assertEquals(Message.getType(bytes), MessageType.BROADCAST);
 
         BroadcastAnnouncementMessage readMessage = new BroadcastAnnouncementMessage(bytes);
