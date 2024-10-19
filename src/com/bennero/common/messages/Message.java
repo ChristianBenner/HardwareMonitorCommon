@@ -20,6 +20,7 @@ public abstract class Message {
     public static final byte STATUS_FAILED_READ = 3; // we failed to read the message (this trumps BAD_RECEIVE anyway because we cannot confirm the integrity of the status)
 
     private final static int TYPE_POS = 17;
+    private final static int SENDER_UUID_POS = 0;
     private final static int CHECKSUM_POS = 247;
 
     private static final byte BOOL_TRUE = 0x01;
@@ -77,6 +78,10 @@ public abstract class Message {
 
     public static byte getType(byte[] bytes) {
         return bytes[TYPE_POS];
+    }
+
+    public static UUID getSenderUUID(byte[] bytes) {
+        return MessageUtils.readUuid(bytes, SENDER_UUID_POS);
     }
 
     public static String getTypeString(byte[] bytes) {
